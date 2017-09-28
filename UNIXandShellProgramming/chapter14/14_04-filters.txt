@@ -1,0 +1,57 @@
+FILTERS
+
+The following are a few of the filters that are available in the Unix system:
+awk, cat, comm, cut, diff, grep, head, join, less, more, paste, sed, sort, spell, tail, tr, uniq, and wc.
+
+more Filter
+
+more filename(s),
+filename represents one or more files that we wish to view screen by screen.
+
+less Filter
+
+less filename(s),
+filename represents one or more files that we wish to see page-wise.
+
+Brief description of the commands used with the less filter
+Command				Description
+n j					It navigates forward n number of lines.
+n k					It navigates backward n number of lines.
+G					It takes the cursor to the end of the file.
+g					It takes the cursor to the start of the file.
+q or ZZ				It exits the less filter.
+/pattern			It searches for the given pattern in the forward direction. The following are examples:
+					(a) /project:		It searches for the pattern project in the text.
+					(b) /\/project\/:	It searches for the pattern /project/ in the text. The backslashes (\) are used as escapes.
+?pattern			It searches for the given pattern in the backward direction. The following are examples:
+					(a) ? project:	It searches for the pattern project in the text in the backward direction.
+					(b) ?/project/:	It searches for the pattern project in the backward direction.
+n					It searches for the next match of the specifi ed pattern in the backward direction.
+N					It searches for the next match of the specifi ed pattern in the forward direction.
+
+$ less file1 file2
+This statement will open two files, file1 and file2.
+:e filename	It opens the specified file while viewing the current file.
+:n			It switches to the next file.
+:p			It switches to the previous file.
+
+tee Command
+
+tee [-a | --append ][-i] [filenames]
+
+Brief description of the parameters used in the tee command
+Parameter		Description
+-a | --append	It appends to the specified files.
+-i				It ignores interrupted signals.
+filename		It represents one or more files in which the output of the command has to be stored.
+
+The following statement displays the list of files and directories on the screen as well as saves them in the file listfiles.txt.
+(a) $ ls | tee listfiles.txt
+(b) In order to append content to a file, the -a option is used as shown in the following example.
+$ ls | tee –a listfiles.txt
+We can also write the output to multiple files in the following manner, where the list of files and directories is stored in the three files, a.txt, b.txt, and c.txt:
+(c) $ ls | tee a.txt b.txt c.txt
+(d) The following example counts the number of lines in the file letter.txt. 
+The count of the lines will be displayed on the screen as well as saved to the file lines.txt.
+$ cat letter.txt | wc -l | tee lines.txt
+

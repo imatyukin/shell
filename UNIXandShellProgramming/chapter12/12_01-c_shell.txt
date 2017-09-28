@@ -1,0 +1,850 @@
+C Shell Programming
+
+Command History
+
+history [ -r ] [-h]
+
+The -r option is used to print history lines in reverse order, from the most recent to the oldest.
+The -h option prints history lines without line numbers.
+
+To display all the lines that are stored in the history:
+
+%history
+
+To specify the number of lines that we want stored in the history of the start-up file .cshrc:
+
+set history=80
+
+Retrieving commands from history
+
+'bang operator'
+
+List of formats used to refer to previous commands in the command history
+Format		Replaced with
+!!			The last command in the history
+!n			The command represented by the specified line number n in the command history.
+!-n			The command with the line number n from the most recent command
+!string		The last command that begins with string
+!?string?	The last command that contains string anywhere in the command line
+
+(a) !!
+This retrieves the last command.
+(b) !8
+This retrieves command number 8 from the history list.
+(c) !-4
+This retrieves the fourth most recent command.
+(d) !cd
+This retrieves the last command that begins with the letters cd.
+
+List of argument selectors from the command history
+Expression	Specification
+0			First word of the command, that is, the command name
+n			The nth argument of the command, 0 refers to the command name and its arguments are numbered from 1
+^			First argument of the command
+$			Last argument of the command
+%			Argument matching the specified string
+m-n			Substitutes arguments from m through n of the history line
+m-			Argument from the mth location till the second last argument
+-n			The first argument of the history line through to the nth argument, it is the same as 0-n
+M*			Arguments beginning with the mth word through to the last argument of the line, it is the same as m-$
+*			All arguments of the command line
+
+A colon (:) is used to create a new command from the previous command.
+
+(a) !:3
+This recalls the third argument from the last command.
+(b) !:*
+This recalls all the arguments from the last command.
+(c) md !10:2
+This performs an md on the second argument from the command number 10.
+(d) md !10:$
+This performs an md on the last item from the command number 10.
+(e) !cd:^
+This retrieves the first argument of the last command that started with cd.
+(f) !cd:1
+This is same as the preceding example. It retrieves the first argument of the last command
+that started with cd.
+(g) !cd:$
+This retrieves the last argument of the last command that started with cd.
+(h) !$
+This retrieves the last argument of the last command.
+
+Command Substitution
+
+d=`date`
+
+Filename Substitution — Globbing
+
+1. The character * matches any string of characters, including the null string.
+2. The character ? matches any single character.
+3. A pair of characters separated by a hyphen (-) matches any character between the two
+(inclusive).
+4. The character ~ at the beginning of a filename refers to home directories. The user’s home
+directory is substituted in the place of ~.
+
+(a) ls a{b,c,d}e
+This statement will show the filenames that consist of three characters and which begin
+and end with characters a and e respectively (e.g., abe ace ade).
+(b) ls *.txt
+This statement will show the list of filenames that have the extension .tx.
+(c) ls [abc]*
+This statement will show the list of filenames that begin with a, b, or c.
+(d) ls [a-d]*
+This statement will show the list of filenames that begin with any character from a to d.
+(e) ls a???.txt
+This statement will show the list of filenames that consist of four characters and which
+begin with character a and have the extension .txt.
+(f) cd ~john
+This statement will change the directory to the home directory of the user, john, that is,
+to /usr/john directory.
+(g) ls ~john/progs/{try1,try2 try3}.c
+This statement will display the files /usr/john/progs/try1.c, /usr/john/progs/try2.c,
+and /usr/john/try3.c.
+To turn off the filename substitution feature, set the noglob variable through the following command.
+set noglob
+
+Filename Completion
+
+To turn on filename completion, we need to set the C shell variable, filec, through the following command:
+set filec
+We have to add this command in the C shell start-up file .cshrc.
+
+Let us assume that our current directory contains the following files and directories.
+project.txt progs/ program1.c programs2.c
+Observe the following file completion commands:
+(a) %ls prEsc
+This command will display pro and then the terminal will beep as there are multiple matches beginning with the word pro.
+(b) %ls projEsc
+It will uniquely identify and display the filename project.txt.
+(c) ls prog^D
+It will display the files and directories that begin with the word prog.
+(d) progs/ program1.c programs2.c
+For making the task of typing long commands easier, the C shell supports the concept of aliases.
+
+Aliases
+
+alias name text
+
+The name will become the alias of the command(s) represented by text.
+
+(a) alias pri printenv
+In this example, pri will act as an alias of the printenv command. Now if we type pri
+on the command line, it will be replaced by the printenv command before executing.
+(b) alias h history -r
+This statement will declare letter h as an alias of the history -r command. Hence, h will
+be replaced by the history -r command before being executed.
+(c) To view all current aliases, just write alias on the command line without any argument:
+alias
+(d) To remove a previously defi ned alias, specify its name in the unalias command:
+unalias alias_name
+C shell also supports the feature of job control. For example, we can suspend and resume
+jobs, switch background jobs to foreground and vice versa, and kill jobs.
+
+Job Control
+
+The C shell supports a job control feature that allows us to do the following tasks:
+1. Run processes in the background
+2. Bring background jobs to the foreground when required
+3. Suspend current jobs
+4. Resume suspended jobs
+5. Kill jobs
+
+A process can be set to execute in the background by following its command with an
+ampersand (&) symbol.
+command&
+
+$ lp a.txt&
+[3] 20971
+This statement indicates that the print command is placed in the background, and its job
+ID is 3 and process ID is 20971. To bring a job to the foreground, the fg command is used.
+Similarly, in order to bring the aforementioned background job with ID 3 to the foreground,
+we use the following command:
+fg 3
+
+To get the list of jobs, we give the command jobs without any argument, as follows:
+jobs -l
+
+(a) %1
+This brings the job with ID 1 to the foreground.
+(b) %1 &
+This takes the job with ID 1 to the background.
+(c) %+ or %%
+This refers to the current job.
+(d) %-
+This refers to the previous job.
+
+To terminate a job, we can use the Ctrl-c interrupt or the kill command with the following syntax:
+kill job_id
+
+kill 3
+This will terminate the job with ID 3.
+
+The kill command can also be used to suspend a background job with the following syntax:
+Syntax kill - STOP job_id
+
+kill -STOP 3
+This will suspend the background job with ID 3.
+
+Summary of commands used to control jobs
+Command					Function
+bg [job_id]				Executes a job with a given ID in the background (default is current job)
+fg [job_id]				Executes a job of the given ID in the foreground
+kill [signal] [job_id]	Terminates a process or sends a signal where the signal usually used is the STOP signal
+jobs [-l]				Lists the foreground and background jobs with their process IDs
+Ctrl-c					Terminates the foreground job
+Ctrl-z					Suspends the foreground job
+
+START-UP FILES
+
+We can interactively invoke the C shell from the command line by using the following command:
+$ csh
+%
+
+The C shell executes three files, .cshrc, .login, and .logout, which are located in the user’s
+home directory and indicated by the HOME environment variable. These files can be used for
+customizing the C shell environment.
+
+.cshrc File
+
+The .cshrc file is executed every time one of the following occurs:
+1. The C shell is invoked
+2. We log in to the system
+3. A C shell script is executed
+4. A new process is forked
+
+It is executed before the .login file and contains instructions to define or customize the C
+shell environment. We can use this file to set variables and parameters that are local to a
+shell. The instructions that are commonly stored in this file include directory paths, shell
+variables, and aliases.
+
+The following is a sample .cshrc file:
+#!/bin/csh
+# Sample .cshrc file
+set history=50
+set savehist=50
+set ignoreeof noclobber
+if ($?prompt) then
+set prompt=$user ">"
+endif
+alias h history
+alias lo logout
+
+The .cshrc file declares to store or remember 50 lines of history, that is, previous commands
+and also declares to save 50 commands in a login session. Besides this, it will prevent the user
+from logging out of the shell on pressing Ctrl-d by accident. The file also defines the primary
+shell prompt as well as h and lo as alias (shortcuts) for the commands history and logout
+respectively.
+
+.login File
+
+The .login file is executed when we log in to the system. The .login file is read only once
+when we log in and hence contains the commands that we want to execute only once, that
+is, at the beginning of each session. The file usually contains instructions to set up terminal
+settings and environment variables.
+
+The following is a sample .login file:
+#!/bin/csh
+# Sample .login file
+stty erase ^H intr ^C susp ^Z quit ^\\
+echo "You are Welcome"
+
+This .login file displays a welcome message to the user. 
+Besides this, the file also configures the terminal through the stty command. The stty command assigns some functions to certain keys pairs as follows:
+1. Ctrl-h key pairs will be used to delete or erase the previous character.
+2. Ctrl-c key pairs will be used to interrupt the current job.
+3. Ctrl-z key pairs will be used to suspend or pause the current job.
+4. Ctrl-\ key pairs will used to terminate the current job.
+
+.logout File
+
+The .logout file contains commands that are run when the user logs out of the system.
+Usually, it contains the commands that we wish to execute before the user exits.
+
+The following sample .logout file indicates that the user has logged out of the
+system and displays the current system date.
+
+#!/bin/csh
+echo -n "Logged out of the system "
+date
+
+VARIABLES
+
+Environment Variables
+
+List of a few environment variables
+Environment	Description
+variable
+PATH		This is a list of directories in which the shell searches for commands and programs. If a program is in a directory that is not in the path, the shell will not be able to find it.
+EDITOR		This variable is used to decide the editor the user wishes to use.
+SHELL		This variable displays the name of the shell.
+HOME		This variable points to the user’s home directory.
+TERM		This variable informs us of the type of the user’s terminal. The C shell uses the terminal definitions given in the termcap file. Typical terminal types are vt100 or xterm.
+TERMCAP		This variable specifies the file containing terminal definitions.
+DISPLAY		This environment variable is set while using an X device and is used to keep track of the display the graphics should be created on.
+PRINTER		This variable defines the name of the default printer.
+
+To change or assign a value to an environment variable, we use the following syntax:
+Syntax setenv environment_variable value
+
+setenv TERM vt100
+
+The changes will remain in effect until we log out or invoke a new shell. To change an
+environment variable permanently, we need to define it in the file .cshrc. The changes will
+come into effect the next time we log in or invoke an instance of the shell. To make the
+changes come into effect immediately, we give the following command:
+
+source .cshrc
+
+To append a value at the end of an environment variable, we use the following syntax:
+
+Syntax setenv VARIABLE ${VARIABLE}:value_to_append
+
+This will append the value, value_to_append, to the end of the current value of the variable.
+To remove an environment variable, we use the unsetenv command.
+
+(a) To remove the environment variable, TERM, we can use the following command.
+% unsetenv TERM
+(b) To display the list of all currently set environment variables, the printenv command is
+used.
+% printenv
+HOME=/home/john
+SHELL=/bin/csh
+PATH=(/home/john/bin /bin /usr/bin /usr/local/bin)
+USER=john
+TERM=vt100
+EDITOR=emacs
+
+Shell Variables
+
+List of predefined shell variables
+Predefined	Description
+variable
+argv		The list of arguments passed to the current command is assigned to it.
+cwd			It contains the full path name of the current directory.
+home		It is the home directory of the user, initialized from the HOME environment variable.
+path		It is the list of directories that the shell is supposed to search in, for the commands to execute. It is initialized from the PATH environment variable.
+prompt		It is a string that represents the shell prompt for an interactive input. The default prompt for the C shell is %.
+shell		The path name of the shell program currently in use is assigned to it. The default path name for the C shell is /bin/csh.
+status		The exit status of the last command is assigned to this variable. Usually, successful commands return value 0, and failure or unsuccessful commands return a value of 1.
+term		The name of the terminal type is assigned to it. It gets a value from the TERM environment variable. The default value is /etc/ttytype.
+user		The login name of the user is assigned to it. It gets a value from the USER environment variable.
+
+Built-in Shell Variables
+
+List of built-in shell variables
+Variables	Description
+autologout	Contains the number of minutes the shell can be idle before it automatically logs out
+Cdpath		Specifies a list of directories to be searched by the chdir or cd command to find subdirectories
+Echo		When set, causes each command and its arguments to echo before it is executed
+history		Sets the number of lines of history (previous commands) to be remembered
+histchars	Changes the history substitution characters, ‘!’ and ‘^’
+ignoreeof	Prevents logging out of the shell with Ctrl-d
+mail		Specifies the files where the shell checks for mail
+noglob		Avoids filename expansion
+notify		When set, the shell sends asynchronous notification of changes in the job status
+noclobber	Prevents overwriting of files when using redirection
+savehist	Defines the number of history commands to save from one login session to the next
+time		If set, displays the statistical lines showing the resources used by the command that takes more than the specified CPU time in execution
+verbose		Causes the words of each command to display after history substitution
+
+A list of the current shell variables using the set command is as follows:
+% set
+
+We may get the following output.
+argv()
+ignoreof
+history 40
+home /home/john
+path (/home/john/bin /bin /usr/bin /usr/local/bin)
+noclobber
+shell /bin/csh
+
+This list of shell variables, besides displaying the information of home, path, and shell of
+the user, also informs that the command line argument’s array is currently empty, accidental
+logging out of the shell by pressing Ctrl-d is not allowed, 40 lines will be stored in the history
+to remember, and the existing files will not be overwritten while using redirection.
+
+To assign value to a shell variable, the set command is used.
+
+set shell_variable=value
+
+set history=50
+This example will set the history to store 50 lines.
+
+Unsetting Variable
+
+To delete or unset a shell variable, we use the unset command.
+
+% unset variable_name
+
+The unset command completely removes the variable from memory. The command to
+remove the shell variable, history, which we just created, is as follows:
+
+% unset history
+
+CUSTOMIZING SHELLS
+
+Setting Primary Prompt
+
+List of symbols used in customizing primary prompt
+Symbol			Displays
+$cwd			Current working directory
+$cwd:t			Current working directory with the user’s home directory represented by ‘~’
+'uname -n'		Full host name
+`hostname -s`	Host name up to the first ‘.’
+%B or %b		Start/Stop boldfacing mode
+%U or %u		Start/Stop underline mode
+`whoami`		Username
+%h				Current history number
+%t				Time of day in the 12-hour system, hh:mm a.m./p.m.
+%T				Time of day in the 24-hour system, hh:mm
+%p				Time of day in the 12-hour system with seconds hh:mm:ss a.m./p.m.
+%P				Time of day in the 24-hour system with seconds hh:mm:ss
+%D				The day in two digits, ‘dd’ format
+%w				The month in three character format, ‘Jan’
+%W				The month in two digits, ‘nn’ format
+%y				The year in two digits, ‘yy’ format
+%Y				The year in four digits, ‘yyyy’ format
+%d				The weekday in three characters, ‘Mon’ format
+
+(a) set prompt="${cwd} >"
+It sets the prompt to the current working directory.
+/usr/john>
+(b) set prompt = $user " > "
+It sets the prompt to the user’s name.
+john>
+(c) set prompt = "\! $user > "
+It sets the prompt to the number of the current history event followed by the user’s name
+and > character.
+209john>
+
+Changing History Characters
+
+set histchars="char1char2"
+
+char1 replaces the ! character and char2 replaces the ^ character.
+
+% set histchars='@#'
+
+Using this statement, the history characters are changed. This implies that while accessing
+the history command, in the place of ! and ^, we will now use @ and # respectively. It also
+means that instead of using the !! command that was earlier used for accessing the last
+command from the history, we need to now use the @@ command. Similarly, instead of using
+the command !:^, which was earlier used to retrieve the fi rst argument of the last command,
+we now need to use the @:# command.
+
+Setting mail Variable
+
+The mail variable is used to inform the shell about the file to check for incoming mail.
+
+set mail = (time_interval file_to_check)
+
+This syntax will make the shell check file_to_check periodically for mails in the
+specified time_interval. If time_interval is not specified, a default of five minutes is
+considered.
+
+(a) In the following file, we set the mail variable.
+set mail=(/usr/spool/mail/john)
+By assigning this file to the mail variable, we are asking the shell to check this file after
+five minutes to see if any mail has arrived there. The shell will notify us in case any new
+mail arrives in the file. We can also change the time interval for checking the mail from
+five minutes to any desired time. The following example does the same.
+(b) set mail=(60 /usr/spool/mail/john)
+This statement asks the shell to check the mailbox of the user, john, every 60 seconds.
+It is to be remembered that if the first word of the value of the mail variable is a
+numeric, it specifies a time interval in seconds for the shell. If we specify multiple
+mail files, the shell displays the message along with the name of the file where the
+mail has arrived.
+
+Sending mail
+
+To send mail to a user, we use the mail program. The following is the syntax for sending mail:
+mail username_to_receive_mail
+message...
+message...
+EOT
+
+mail john
+This is a test for checking if the mail
+program is working
+EOT
+
+C SHELL OPERATORS
+
+List of arithmetical operators
+Operator	Description
+( )			Grouping and changing precedence
+~			Complement of 1
+*			Multiply
+/			Divide
+%			Modulo
++			Add
+-			Subtract
+<<			Left shift
+>>			Right shift
+&			Bitwise ‘AND’
+^			Bitwise ‘exclusive OR’
+|			Bitwise ‘inclusive OR’
+
+(a) @c=$a+$b
+This adds the values of variables a and b and assigns the addition to variable c.
+(b) @d=($a+$b) * $c
+This adds the values of variables a and b and the total is multiplied with the value of
+variable c and finally the result is stored in variable d. It is because of the parentheses that
+addition operator is performed before multiplication.
+(c) @c=$a % 5
+This applies the modulo operator to the value of variable a. Modulo operation here
+divides the value of variable a by five and the remainder will be stored in variable c.
+(d) @d=$a<<1
+This left shifts the value in variable a by 1 bit. Every left shift operation multiplies the
+value by two and a right shift divides the value by 2. Hence, the value in variable a is
+multiplied by two and the result is assigned to variable d.
+(e) @e=$a&$b
+The bitwise AND operation is applied on the bits of values of variables a and b and the
+result is stored in variable e. While using bitwise operators, the operation is applied on
+the bit structure of the number. In a bitwise AND operation, the resulting bit is 1, only
+when both the bits being compared are 1.
+(f) @f=$a^$b
+The bitwise exclusive OR operation is applied on the values of variables a and b and the
+result is assigned to variable f. In a bitwise OR (exclusive) operation, the resulting bit is
+set to 1 only when either of the bits being compared is 1. This implies that it will result
+in 0 if both the compared bits are 1.
+(g) @g=$a|$b
+The bitwise inclusive OR operation is applied to the values of variables a and b, and the
+result is assigned to variable g. In a bitwise OR (inclusive) operation, the resulting bit is
+set to 1 when either or both the bits being compared are 1.
+
+List of assignment operators
+Operator	Description
+++			Increments
+--			Decrements
+=			Assigns
+*=			Multiplies the left side value by the right side value and updates the left side
+/=			Divides the left side value by the right side value and updates the left side
++=			Adds the left side value to the right side value and updates the left side
+-=			Subtracts the left side value from the right side value and updates the left side
+
+(a) @a++
+The value in variable a will be incremented by 1.
+(b) @b=$a
+The value in variable a will be assigned to variable b.
+(c) @c+=$a
+The values in variables c and a will be added and thevsum will be stored in variable c.
+(d) @c/=$a
+The value in variable c will be divided by the value in variable a and the result will be stored in variable c.
+
+List of comparison operators
+Operator	Meaning
+==			Equal to
+!=			Not equal
+>			Greater than
+<			Less than
+>=			Greater or equal to
+<=			Less than or equal to
+!			Logical NOT
+&&			Logical AND
+||			Logical OR
+
+(a) ($a==5)
+This returns true if the value in variable a is equal to 5
+(b) ($a !=5)
+This returns true if the value in variable a is not equal to 5
+(c) ($a <=10)
+This returns true if the value in variable a is less than or equal to 10
+(d) (!$a==5)
+The result of the logical expression is reversed. This implies that if the value in variable
+a is equal to 5, then the resulting Boolean value that is true will be reversed to false and
+vice versa.
+(e) ($a > 2 && $b < 1)
+Since the two logical expressions are connected through the logical AND operator, the
+combination evaluates to true only when both the individual logical expressions are true,
+that is, when variable a is greater than 2 and variable b is less than 1.
+
+WRITING AND EXECUTING C SHELL SCRIPT
+
+#!/bin/csh
+The first line, #!/bin/csh, specifies that the shell to be executed is the C shell, csh.
+
+We can execute C shell scripts using the source command. This command makes the C shell read commands from a file.
+
+source scriptname
+
+When debugging C shell scripts, it is best to use the csh command.
+
+csh -x scriptname
+
+The -x option sets the echo variable so that commands are echoed to standard error.
+
+List of special shell variables
+Variable		Meaning
+${0}			The name of the script being run
+$?variable_name	Returns true if the variable name is defined and otherwise returns false
+$n				The value of the nth positional parameter passed to the script
+$argv[n]		The value of the nth argument passed to the script
+$#argv			The number of arguments passed to the script
+$argv[*]		All the arguments supplied to the script
+$argv[x-y]		The arguments from x to y passed to the script, that is, the arguments in the argv array between index locations, x and y are returned
+$$				Process identification number of the current process
+
+Reading Data
+
+For reading data from the keyboard and assigning it to a variable(s), we initialize it to hold
+the special parameter $<. The parameter $< prompts the user to enter some data. The entered
+data is then assigned to the desired variable.
+
+set variable_name = $<
+
+The data typed by the user up till the Enter key is assigned to variable_name.
+
+set filename = $<
+Using this statement, everything typed by the user will be assigned to the variable filename
+till the Enter key is pressed. In other words, $< substitutes a line from the standard input
+device—the keyboard.
+
+User-defined Shell Variables
+
+set variable_name=value
+
+variable_name is the name of the variable that can be up to 20 letters or digits long
+and can include underscores but not begin with a number. value is the data that we want to
+assign to the variable.
+
+set str="Hello World!"
+
+Using this statement, a string variable, str, is initialized to the string Hello World!
+
+To initialize integer variables, we use the following syntax:
+
+@ variable=value
+
+@l=10
+
+To assign a null value to a variable, don’t assign any value to it.
+
+set area
+
+This example will assign a null value to the variable area.
+
+To assign a list of values to the variable, enclose them in parentheses.
+
+set variable_name=(value1 value2 value3)
+
+set studentnames = (Ajay Omy Manish Bharat)
+
+This example will assign the strings Ajay, Omy, Manish, and Bharat to the variable studentnames.
+Now, studentnames is not a simple variable but an array.
+
+To assign value to the nth word in the variable, we use the index to specify the location as shown in the following syntax:
+
+set variable_name[n]=value
+
+To assign a string, Gunjan, to the second index location in the array studentnames,
+the following command is used.
+
+set studentnames[2]="Gunjan"
+
+The set command issued without arguments will display all the shell variables.
+
+To prepend a value to an existing shell variable, we use the following syntax:
+
+set name=prepend_value${name}
+
+set new_list=Sanjay${studentnames}
+
+This example will prepend the string, Sanjay, to the existing strings in the studentnames
+array and assign them to the array new_list.
+
+A similar syntax can be used to append a value to an existing shell variable.
+
+set name=${name}append_value
+
+set new_list=${studentnames}Puneet
+
+This example will append the string, Puneet, to the existing strings in the studentnames array
+and assign them to the array new_list.
+
+To find the length of a variable, that is, to find the number of characters in a string or the
+numbers of words or numerals in an array, the following syntax is used:
+
+$#variable_name
+
+This syntax will return zero if the variable is assigned a null value and an error if the variable is not set.
+
+(a) str="Hello"
+echo $#str
+This example will display the length of the string, str, that is, it will display value 5:
+(b) echo $#studentnames
+This example displays the count of the elements in the array, studentnames.
+
+FLOW CONTROLLING STATEMENTS
+
+if-then-else Statements
+
+if (logical expression) then
+	statements
+[else if (logical expression) then
+	statements ]
+[else
+	statements]
+endif
+
+List of file testing operators
+Operator	Returns true if
+-d			File is a directory
+-e			File exists
+-f			File is a plain file
+-o			User owns file
+-r			User has read permission
+-w			User has write permission
+-x			User has execute permission
+-z			File has a length of zero
+
+Branching with goto
+
+In general, commands in a shell script are executed one after another in succession. Using
+the goto command, we can change the fl ow of the program in a desired manner.
+
+goto label
+
+The shell will search for the statement that begins with the specified label followed by a
+colon (:). On finding the given label, the execution resumes with the statement following
+the label. If the given label is not found, then an error message is displayed followed by the
+termination of the script.
+
+exit Command
+
+Successful execution of a script returns a value 0, whereas an unsuccessful one returns a non-zero value.
+The exit command may return a value in the 0–255 range.
+
+exit [n]
+
+n is the exit status returned to the parent process.
+
+exit 0
+The aforementioned command sets the return status of the shell to 0. 
+This return status can be used to determine the status of an executed shell script.
+
+switch, case, breaksw, and endsw Statements
+
+switch (expression)
+	case pattern1:
+		statements
+		breaksw
+	case pattern2:
+		statements
+		breaksw
+	: : :
+	: : :
+	default:
+		statements
+		breaksw
+endsw
+
+LOOPS
+
+while end Loop
+
+while (logical expression)
+	statements
+end
+
+repeat Command
+
+The repeat command is used for repeatedly executing a command a specified number of times.
+
+repeat count command
+
+count is an integer value representing the times of repetition.
+A zero value for count suppresses the execution of the command.
+
+(a) repeat 5 echo Hello World
+This statement displays the text Hello World five times.
+
+(b) repeat 5 echo Hello World! >xyz.txt
+Five lines of the text Hello World! will be written in the file xyz.txt.
+
+foreach end Loop
+
+foreach var (list)
+	statements;
+end
+
+ARRAYS
+
+array_name(data1 data2 data3...)
+
+The data within the parentheses is separated by a space.
+The data can be enclosed in single quotes, back quotes, or double quotes as desired.
+
+(a) set countries=(U.S.A U.K. India Australia)
+This example creates an array, countries, consisting of four elements, U.S.A, U.K.,
+India, and Australia. These array elements can be accessed using the subscripts 1, 2, 3,
+and 4. Observe the following examples:
+(i) echo countries[2]
+This displays the second array element U.K.
+(ii) echo countries[4]
+This displays the fourth array element Australia.
+(iii) echo countries[2-3]
+This displays the second and third array elements U.K. and India.
+(iv) echo countries[3-]
+This displays elements from the third array till the end, that is, India Australia.
+(v) echo $#countries
+This displays the length of the array countries.
+(vi) set places=($countries)
+This creates an array places and assigns all the array elements of countries to it.
+(vii) set countries=($countries Japan)
+This adds an element Japan to the end of an existing array.
+(viii) set countries=(China $countries)
+This adds an element China to the beginning of an existing array.
+(ix) set countries=()
+This makes the countries array empty.
+(x) unset countries
+This removes the definition of the array countries.
+
+typeset –A assoc_array_name
+
+assoc_array_name represents the associative array.
+
+typeset -A capitals
+capitals=(India Delhi Australia Sydney UK London )
+
+The two preceding statements define an associative array by the name capitals consisting of
+three countries and their respective capitals. The countries India, Australia, and UK are the
+keys of the associative array and the capitals of these countries, Delhi, Sydney, and London,
+are the values of the respective keys.
+
+The following example prints the value of the key Australia from the associative array,
+capitals.
+
+print ${capitals['Australia']}
+
+DISPLAYING ERRORS
+
+List of terms used to display errors
+Term					Description
+sys_nerr				It represents the number of error messages defined in sys_errlist.
+sys_errlist[]			It is the global error list used to access and display error messages. 
+						The respective error messages are retrieved using errno as index in the sys_errlist.
+strerror() function		It returns a string that describes the error of the code passed to it in the argument, errnum, as follows:
+						char *strerror(int errnum);
+strerror_r() function	It is similar to strerror() and returns the string that describes the error of the error code passed to it in the argument errnum.
+						However, the string is returned in the supplied buffer buf of length n.
+						The function returns 0 on success and -1 on failure as follows:
+						int strerror_r(int errnum, char *buf, size_t n);
+perror() function		It displays the error message corresponding to the current value of the global variable errno and writes it, followed by a newline, to the standard error file descriptor stderr.
+						In other words, this function converts the error code into human readable form.
+						The variable errno is set when errors occur during a call to a system or library function. 
+						The name of the program where error may occur or the file on which system calls are applied is passed to the perror() function as an argument.
+						public static void perror(String s)
+						Here, s is the program or filename.
+
+onintr command
+
+The onintr command is used to specify the action to be taken when the shell receives a
+signal.
+
+onintr label
+
+label is the statement that the script will jump to on the occurrence of a signal. 
+This implies that when the user presses the interrupt key, often confi gured to be Ctrl-c, 
+the script will jump to the statement label to do the desired task.

@@ -1,0 +1,127 @@
+# test: Testing Expressions for Validity
+
+# Brief description of the options used with the test command
+# Option 	Description
+# –a file	Returns true if the file has at least one character
+# –e file	Returns true if the file exists
+# –f file	Returns true if the file exists and is a regular file
+# –r file	Returns true if the file exists and is readable
+# –w file	Returns true if the file exists and is writeable
+# –x file	Returns true if the file exists and is executable
+# –d file	Returns true if the file exists and is a directory
+# –s file	Returns true if the file exists and has a size greater than zero
+
+# Brief description of the operators used for numeric comparison in the test command
+# Operator	Description
+# -eq		Equal to
+# -ne		Not equal to
+# -gt		Greater than
+# -ge		Greater than or equal to
+# -lt		Less than
+# -le		Less than or equal to
+
+# Brief description of the operators used for string comparison in the test command
+# Operator	Description
+# -n str	Returns true if the string str is not a null string
+# -z str	Returns true if the string str is a null string
+# s1=s2		Returns true if the string s1 is equal to s2
+# s1!=s2	Returns true if the string s1 is not equal to s2
+
+# /dev/null: Suppressing Echo
+
+# STDIN—Standard input stream. It is used for entering data. Its file descriptor is 0.
+# STDOUT—Standard output stream. It is used for displaying output on the screen. Its file descriptor is 1.
+# STDERR—Standard error stream. It deals with errors. Its file descriptor is 2.
+
+# command > /dev/null [ 2>&1]
+
+# command > file The stdout is redirected to the file, overwriting it if the file exists.
+# command > /dev/null The stdout is redirected to /dev/null, suppressing the output on the screen.
+# command < file The command takes input from the file instead of the standard input device.
+# 2 > file The stderr is redirected to the file, overwriting it if file exists
+# 2>&1 The stderr is redirected to the same location where stdout is being redirected.
+
+# exec: Execute Command
+
+# Brief description of the options used to open a file with the exec command
+# Option			Description
+# exec 0< filename	File is opened for input
+# exec 1> filename	File is opened for output
+# exec 2> filename	File is opened for writing errors
+
+# The following is the command to close an input file:
+# exec 0<&–
+# The following is the command to close an output file:
+# exec 1>&–
+
+
+# case Statement
+
+# case variable in
+# 	value1)
+# 		command1
+# 		command2
+# 		...
+# 		...;;
+# 	value2)
+# 		command1
+# 		command2
+# 		...
+# 		...;;
+# 		command1
+# 		command2
+# 		...
+# 		...;;
+# esac
+
+# Functions
+
+function_name ()
+{
+	statement
+	statement
+	.
+	statement
+	return value
+}
+
+# select: Creating Menus
+
+# select variable in menu_opt1 menu_opt2...menu_optn
+# do
+# 	case $variable in
+# 		menu_opt1) command1;;
+# 		menu_opt2) command2;;
+# 		menu_optn) commandn;;
+# 	esac
+# done
+
+# getopts: Handling Options in Command Line
+
+# getopts xyz variable
+
+# ls -l
+
+# Options with values
+# getopts x:y: variable # x, y are the allowed options with values
+
+# set: Setting Positional Parameters
+
+# set input_data/command
+
+# shift: Shifting Command Line Arguments
+
+# shift [n]
+
+# at: Scheduling Execution
+
+# at time [date]
+
+# TRAPPING SIGNALS
+
+# trap command
+# trap cmd signals
+
+# trap "ls" 1 2 3 15
+# trap "ls" SIGHUP SIGINT SIGQUIT SIGTERM
+

@@ -1,0 +1,3 @@
+102	Chirag	82
+103	Kanika	70
+104	Naman	88

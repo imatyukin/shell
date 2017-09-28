@@ -1,0 +1,358 @@
+VISUAL=$(whence emacs)
+or
+VISUAL=$(whence vi)
+
+$ set -o emacs
+or
+$ set -o vi
+
+Keys for cursor movement in command mode in vi
+Key	Description
+l	Moves the cursor one character forward
+h	Moves the cursor one character back
+w	Moves the cursor one word forward
+b	Moves the cursor one word back
+fx	Finds the character x in the line
+0	Moves the cursor to the start of the line
+$	Moves the cursor to the end of the line
+
+Keys for performing editing tasks in the command mode in vi
+Key	Description
+x	It deletes the character at the position of the cursor. It can be preceded by a number.
+X	It deletes the character behind the cursor. It can be preceded by a number.
+~	It changes the case of the character at the position of the cursor. It can be preceded by a number.
+u	It undoes the last change made to the line.
+U	It undoes all changes made to the line.
+
+Key pairs for cursor movement in emacs
+Key pair	Description
+Ctrl-f		Moves the cursor one character forward
+Ctrl-b		Moves the cursor one character back
+Esc-f		Moves the cursor one word forward
+Esc-b		Moves the cursor one word back
+Ctrl-a		Moves the cursor to the beginning of the line
+Ctrl-e		Moves the cursor to the end of the line
+
+Key pairs for editing in emacs
+Key pair	Description
+Ctrl-d		Deletes the character at the cursor
+Esc-d		Deletes the current word
+Ctrl-c~		Capitalizes the current character
+Esc-l		Converts the current character to lower case
+
+Command Name Aliasing
+
+alias alias_name=command
+
+alias ci='cat inventory.txt'
+
+alias changedir= 'set dirname=projects; cd $dirname; unset dirname'
+
+unalias changedir
+
+Command History Substitution
+
+history
+
+Retrieving commands from command history in Korn shell
+
+HISTSIZE=number_of_lines_to_store_in_command_history
+
+HISTSIZE=80;export HISTSIZE
+
+KORN SHELL META CHARACTERS
+
+List of Korn shell meta characters
+Character	Meaning
+\			This is the escape character. It disables the special meaning of the character that it precedes.
+*			This is the wild card match for zero or more characters.
+?			This is the wild card match for one character.
+[abc]		This matches one character specified within the brackets, a, b, or c.
+[!abc]		This matches one character not specified within the brackets, a, b, or c.
+[a-z]		This matches one character in the range between a and z.
+<			This redirects the standard input. The input comes from the specified file instead of the terminal.
+>			This redirects the standard output. The output is sent to the specified file instead of the terminal.
+>>			This appends the standard output to the end of a specified file.
+|			The pipe character connects the standard output of one command to the standard input of another command.
+&			When appended to a command, it makes the process run in the background.
+~			It represents the path of a user’s home directory.
+.			It represents the current directory.
+..			It represents the parent to the current directory.
+/			It represents the root directory.
+'			It represents a string with variable substitution.
+"			It represents a string with variable substitution. It also preserves the embedded spaces and new lines if any.
+`			Back quotes around a command string tell the shell to run the command and use the output in place of the string.
+( )			It groups commands together for execution.
+;			It separates commands on a command line.
+
+Arithmetic and Logical Operators
+
+Arithmetic and logical operators
+Operator	Description			Operator	Description	Operator	Description					Operator	Description
++			Unary plus			+			Add			!=			Comparison for non-equality	&&			Logical ‘AND’
+-			Unary minus			-			Subtract	=~			Pattern matching			||			Logical ‘OR’
+!~			Binary inversion	<<			Left shift	&			Bitwise ‘and’				++			Increment
+			(one’s complement)
+*			Multiply			>>			Right shift	^			Bitwise ‘exclusive or’		--			Decrement
+/			Divide				==			Comparison	|			Bitwise ‘inclusive or’		=			Assignment
+											for equality
+%			Modulo
+
+Relational Operators
+
+Relational operators
+Operator	Description
+-eq			equal to
+-ne			not equal to
+-lt			less than
+-gt			greater than
+-le			less than or equal to
+-ge			greater than or equal to
+
+VARIABLES
+
+Shell Variables (local variables)
+
+Creating shell variables
+
+a
+radius
+volume2
+area_rectangle
+
+Assigning values to shell variables
+
+variable=value
+
+message="Are you sure?"
+radius=5
+
+Exporting variables
+
+$ VARNAME=new value
+$ export VARNAME
+or
+$ export VARNAME=new value
+
+PS1=':${PWD#HOME/}:!$'
+PATH="$PATH:/usr/John/bin"
+export PS1 PATH
+
+Environment Variables (global variables)
+
+List of environment variables
+Environment	Description
+variable
+EDITOR		It is used to decide the editor the user wishes to use.
+			Examples:
+			EDITOR=vi
+			EDITOR=emacs
+VISUAL		It is used to specify a default visual editor, overriding the EDITOR variable.
+			Example:
+			VISUAL=vi
+			The Korn shell first checks the value of the VISUAL environment variable. If it is defined, it uses the
+			specified command line editor. If the VISUAL environment variable is undefined, the Korn Shell checks the
+			value of the EDITOR environment variable and uses the editor specified in it, if defined.
+HOME		It is the home directory of the user. We can set this variable to override the setting in /etc/passwd that
+			represents the home directory. The tilde symbol ~ refers to the home directory.
+			Example: HOME=/home/john
+ENV			Besides the .profile file (if it exists), the Korn shell uses the start-up file specified by this variable.
+			Example: ENV=$HOME/.kshrc
+			Basically the start-up file can be any filename with any extension, not necessarily, .kshrc. The .profile
+			file is read once on logging in, whereas the file specified through the ENV environment variable is read
+			every time the Korn shell is invoked.
+LOGNAME		It specifies the name of the user.
+			Example: LOGNAME=john
+HOSTNAME	This variable is used by several commands to identify the current host. Hence, the name of the current
+			system is assigned to this variable.
+			Example: HOSTNAME=$(uname -n)
+			Here, the variable uname is meant for displaying the system’s configuration information. The option -n is
+			used for displaying the name of the machine.
+PWD			It contains the absolute path name of the current working directory. Its value is automatically set by the cd
+			command.
+MAIL		This indicates the location of the incoming local e-mail. The mail reader uses this variable to find the
+			mailbox. If not set, the default location where mails are dropped is /var/mail/username.
+MAILCHECK	The MAILCHECK variable specifies the time interval in which the shell will check for new mail. If not
+			set or set to zero, new mail is checked before each new prompt is displayed. The default value of this
+			environment variable is 600 seconds, that is, 10 minutes.
+MAILPATH	This environment variable is used when we have multiple mailboxes. It contains a colon-separated list of
+			mailbox files to check for the new mails. If set, the environment variable overrides the MAIL variable.
+			If MAILPATH is not set, there is no default.
+			Example: MAILPATH=/home/john/mbox:/news/mbox.
+			On getting a new mail, the Korn shell displays this message on our terminal just before the prompt:
+			you have mail in the mailbox file.
+			To modify the mail notification message, append a ? to the path specified in the MAILPATH environment
+			variable followed by the custom message that we wish to display on getting a new mail:
+			MAILPATH=/home/john/mbox? ' New mail has arrived. Please check $_'
+			Here, _ (underscore) is substituted for the name of the mailbox file.
+PAGER		This message indicates if there is more information to be viewed. It is used by programs created for
+			viewing a file.
+			Examples:
+			PAGER=less
+			PAGER=more
+CDPATH		It defines a list of colon-separated directories that the shell checks when a full path name is not given
+			to the cd command. It makes the directory navigation easier as each directory in CDPATH is searched
+			from left to right for a directory that matches the cd argument. Let us assume that our CDPATH is set as
+			follows:
+			CDPATH=:/home/john:/etc:/var
+			The CDPATH environment variable indicates the shell to check the current directory first, /home/john:
+			/etc, and then /var when the cd command is issued without a full path name.
+			Note: The colon (:) alone in CDPATH stands for the current directory.
+			Assume that we give the following cd command:
+			cd progs
+			The shell will search for the progs directory in the current directory followed by the /home/john directory
+			and then the /etc and /var directories. Assuming the progs directory exists in the /home/john
+			directory, our directory will change to the /home/john/progs directory.
+			There is no default value for the CDPATH environment variable and hence this feature is disabled if the
+			environment variable is not set.
+PATH		It contains a list of colon separated directories to search for the file of the issued command. Each directory
+			in PATH is searched from left to right. The command is executed only if the file is found, otherwise an error
+			message is displayed.
+			Example: PATH=:/bin:/usr/bin
+			Here, : (colon) alone represents the current directory.
+			The value in the PATH environment variable asks the shell to check the current directory, the /bin
+			directory, then /usr/bin for the issued command.
+			If not set, the default value for PATH is /bin:/usr/bin.
+PS1			It controls the appearance of the primary prompt. It uses several escape characters to display the desired
+			information in the prompt.
+PS2			It is the secondary prompt and is usually displayed when we break a long Unix command on multiple lines
+			by pressing the Enter key, mid-command. The PS2 prompt by default appears as >, which means that
+			Unix is waiting for the rest of the command. By setting the PS2 environment variable, we can modify the
+			default PS2 prompt > to display the desired information.
+PS3			It defines the prompt for selecting an option in an interactive menu created through the select command.
+			Default prompt is #?.
+PS4			It defines the execution trace prompt that precedes each line of an execution trace. The default execution
+			trace prompt is + (plus).
+HISTFILE	It is used to specify the path name of the file where the list of commands, that is, command history
+			is saved. By default, the history file for bash is .bash_history and that for the Korn shell is .sh_
+			history. We need to delete the commands from the history file each time we log in or else the number of
+			commands stored in it becomes quite large. We can also issue a command in the .profi le file to delete
+			the history file:
+			rm .sh_history
+			By implementing this command, the earlier commands will be deleted each time we log in to the
+			computer.
+HISTSIZE	The value specified through this environment variable decides the number of commands that are
+			kept in the history file. You may recall that the history file makes the previously entered commands
+			accessible by the shell. By default, 512 commands are stored for the root user and 128 commands
+			for other users.
+USER		The username is stored here.
+
+.profile file
+set -o allexport
+TERM=vt102
+LOGNAME=john
+HOSTNAME=$(uname -n)
+HISTSIZE=50
+EDITOR=vi
+MAIL=/usr/spool/mail/$LOGNAME
+HOME=/home/john
+SHELL=/bin/ksh
+ENV=$HOME/doit.kshrc
+PWD=$(pwd)
+PATH=$HOME/bin:/usr/bin:/usr/local:/etc:/bin:/home/john/bin:/usr/local/bin:.
+PS1="$HOSTNAME ! $"
+PS2="Continue….>"
+stty erase \^H intr \^C susp \^Z quit \^\\
+set +o allexport
+
+doit.kshrc
+if [ -z "$VISUAL" -a -z "$EDITOR" ]; then
+set -o vi
+fi
+set -o ignoreeof
+set -o noclobber
+
+To display all environment variables and their values, we can use any of the following commands:
+$ set or
+$ printenv or
+$ env
+
+SETTING SHELL PROMPTS
+
+PS1 Variable
+
+echo $PS1
+
+Escape characters to be used with the PS1 variable
+Escape character	Displays
+\d					Date in Weekday Month Date format (Example, “Fri Dec 15”)
+\H					Host name
+\n					Newline
+\r					Carriage return
+\s					Name of the shell
+\t					Current time in 24-hour HH:MM:SS format
+\T					Current time in 12-hour HH:MM:SS format
+\@					Current time in 12-hour a.m./p.m. format
+\A					Current time in 24-hour HH:MM format
+\u					Username of the current user
+\v					Version of bash
+\w					Current working directory
+\nnn				Character corresponding to the octal number nnn
+\\					Backslash
+\[					Begins a sequence of non-printing characters
+\]					Ends a sequence of non-printing characters
+
+Examples
+(a) Let us try to set the prompt so that it can display today’s date.
+$PS1="\d $"
+The prompt will change in this way.
+Fri Dec 15 $
+(b) Now we will set the prompt to display time, username, and current directory.
+Fri Dec 15 $ PS1="[\t\u\w] $"
+The prompt will change in this way.
+[18:30:15 John~] $
+
+PS2 Variable
+
+Example echo "Number of argument
+> are $#"
+We can see that the prompt ‘>’ appears when the echo command is extended to the next line
+asking for the rest of the statement. The ‘>’ prompt is the default output of the PS2 variable.
+Let us modify it in this way.
+PS2="Continue….>"
+Now, the shell will prompt for the rest of the statement through the following prompt.
+echo "Number of argument
+Continue….> are $#"
+
+PS3 Variable
+
+select command
+
+select variable in option1 option2...optionN
+
+do
+	case $variable in
+		option1) command1;;
+		option2) command2;;
+		optionN) commandN;;
+	esac
+done
+
+PS4 Variable
+
+The PS4 variable is used for changing the execution trace prompt. The default execution
+trace prompt is + (the plus sign). The execution trace is a great tool for debugging shell
+scripts. It lists each command before the shell runs it. To enable the execution trace for a
+shell script, we need to add the set -x statement at the beginning.
+
+To display the shell script name along with the line numbers of the commands in the
+script, we make use of the LINENO variable to set the PS4 prompt in the following way.
+PS4='$0.$LINENO+ '
+
+To display the line numbers only in square brackets along with the trace line, enclose the
+LINENO variable in square brackets in the PS4 prompt in the following way.
+PS4='[${LINENO}]+'
+
+List of file testing operators
+
+Operator	True if
+-d filename	Filename exists and is a directory
+-e filename	Filename exists
+-f filename	Filename is a text file
+-r filename	Filename is readable
+-w filename	Filename is writable
+-x filename	Filename is executable
+-s filename	Filename is not empty
+–l filename	Filename exists and is a symbolic link
+–o filename	User is the owner of the filename
+–g filename	Group ID of the user is the same as that of the filename

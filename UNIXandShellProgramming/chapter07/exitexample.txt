@@ -1,0 +1,20 @@
+/* exit(): Terminating Processes
+ * 
+ * man 3 exit
+ * 
+ * void exit(status)
+ * int status;
+ * 
+ * status is an integer between 0 and 255 and is returned to the parent via wait() to represent an exit status of the process.
+ * The status value 0 indicates normal termination.
+ * 
+*/
+
+/* The following statement demonstrates the normal termination of a process. */
+
+ #include <stdlib.h>
+ 
+ int main()
+ {
+ 	exit(0);
+ }

@@ -1,0 +1,44 @@
+/* STREAM ERRORS
+ *
+ * extern int errno;
+ *
+ * The standard errno values include the following:
+ * 1. E2BIG: The argument list passed to the function is too long.
+ * 2. EACCESS: Access denied! The user does not have permission to access a file, directory, etc.
+ * 3. EBADF: It refers to a bad file descriptor.
+ * 4. EBUSY: The requested resource is unavailable.
+ * 5. ECHILD: The wait() or waitpid() function tried to wait for a child process to exit, but all children have already exited.
+ * 6. EDEADLK: A resource deadlock would occur if the request continued.
+ * 7. EEXIST: The file or directory already exists.
+ * 8. EFAULT: One of the function arguments refers to an invalid address.
+ * 9. EINTR: The function was interrupted by a signal, which was caught by a signal handler in the program, and the signal handler returned normally.
+ * 10. EINVAL: It refers to an invalid argument passed to the function.
+ * 11. EIO: An I/O error occurred.
+ * 12. ENFILE: Too many files are already open in this process.
+ * 13. ENODEV: Device does not exist.
+ * 14. ENOENT: No file was found or the specified path name doesn’t exist.
+ * 15. ENOEXEC: The file is not executable.
+ * 16. ENOLCK: No locks are available.
+ * 17. ENOMEM: The system is out of memory.
+ * 18. ENOSPC: No space is left on the device.
+ * 19. ENOTDIR: The specified path is not a directory.
+ * 20. ENOTEMPTY: The specified directory is not empty.
+ * 21. ENXIO: An I/O request is made to a special file for a device that does not exist.
+ * 22. EPERM: The operation is not permitted—no permission to access the specified resource.
+ * 23. EPIPE: The pipe to read from or write to does not exist.
+ *
+ * int ferror(FILE *stream);
+ * int int feof(FILE *stream);
+ * int void clearerr(FILE *stream);
+ *
+ * Examples
+ *
+ * (a) The ferror function tests the error indicator in the supplied stream and returns a nonzero value if it is set; otherwise, it returns zero.
+ * if (ferror(stdin) != 0) fprintf(stderr,"Error in reading data");
+ *
+ * (b) The feof function tests the end of file indicator within a stream and returns a nonzero value if it is set; otherwise it returns zero.
+ * if (feof(stdin) != 0) fprintf(stderr,"File is over\n");
+ *
+ * (c) The clearerr function clears the end of file and error indicators for the supplied stream. The function does not return any value.
+ * clearerr(stdin);
+*/

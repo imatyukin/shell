@@ -1,0 +1,56 @@
+INPUT/OUTPUT REDIRECTION
+
+Standard input	The default input is taken from the standard input device, that is, keyboard It is also known as stdin.
+Standard output	The default output goes to the user terminal. It is also known as stdout.
+Standard error	The default output goes to the user terminal. It is also known as stderr.
+
+A file stream descriptor is assigned to each of the aforementioned standard streams.
+Standard input has a file descriptor of 0.
+Standard output uses 1.
+Standard errot uses 2.
+
+Output redirection operator
+The output redirection operator is represented by the > (greater than) symbol.
+
+command > output_file
+
+Input redirection operator
+The input redirection operator is represented by the < (less than) symbol.
+
+command < input_file
+
+Examples
+(a) exec 0< tmp
+Instead of from the standard input device, the input will be taken from the file tmp.
+(b) exec 1 > temp
+Instead of the terminal, the standard output will be sent to the file temp.
+(c) exec 2> tmpdata
+Instead of the terminal, the error stream will be sent to the file tmpdata.
+(d) $ ls > tmp
+The list of files and directories will be sent to the file tmp, overwriting its earlier contents.
+(e) ls > /dev/null
+The list of files and directories will not appear on the standard output and will be sent to
+the special file /dev/null also referred to as the ‘bit bucket’. The /dev/null fi le discards
+all data written to it. It is usually used to suppress the output on the screen.
+(f) 1>&3 -
+It informs the shell to redirect the output of the standard output stdout to the same place
+where output of the file descriptor 3 is sent.
+(g) 2>&1
+It informs the shell to redirect the output of standard error 2 to the same place where
+output of the standard output stdout is sent.
+(h) ls > /dev/null 2>&1
+The list of files and directories is sent to the special file /dev/null and the 2>&1 indicates
+that the output of error channel 2 will also be redirected to the standard output stdout,
+thus no output will be sent to the terminal but instead sent to the /dev/null file.
+(i) ls > tmp 2>&1
+The list of files and directories is sent to the file tmp overwriting its earlier content and
+the 2>&1 indicates that the output of error channel 2 will also be redirected to the same
+place where standard output stdout is sent, that is, to the file tmp.
+(j) To close an input file, the following command is used.
+exec 0<&-
+(k) To close an output file, the following command is used.
+exec 1>&-
+(l) To close an output file with file descriptor 3, the following command is used.
+exec 3>&-
+(m) To close an input file with file descriptor 3, the following command is used.
+exec 3<&-

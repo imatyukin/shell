@@ -1,0 +1,228 @@
+INTERPROCESS COMMUNICATION (IPC)
+
+There are two fundamentally different approaches in IPC:
+1. Processes that reside on the same computer
+2. Processes that reside on different computers
+
+Four general approaches:
+1. Pipes 2. Messages 3. Sockets 4. Shared memory
+
+A pipe is a buffer that implements communication between two processes, one of which is considered a producer process and the other, a consumer process.
+There are two types of pipes: named pipe and unnamed pipe.
+
+For establishing communication among processes, each process in the Unix operating system has an associated message queue.
+The messages in the message queue are sent and received via the msgsnd and msgrcv system calls.
+
+Sockets: Unix domain, Internet domain, Stream socket, Datagram socket
+
+The steps involved in establishing a socket on the client side are as follows:
+1. Create a socket with the socket() system call.
+2. Connect the socket to the address of the server using the connect() system call.
+3. Send and receive data using the read() and write() system calls.
+
+The steps involved in establishing a socket on the server side are as follows:
+1. Create a socket with the socket() system call.
+2. Bind the socket to an address using the bind() system call. For a server socket on the Internet, an address consists of a port number on the host machine.
+3. Listen for connections with the listen() system call.
+4. Accept a connection with the accept() system call. This call typically blocks until a client connects with the server.
+5. Send and receive data.
+
+Creating sockets
+
+int socket(int domain, int type, int protocol);
+
+Brief description of the parameters used in the socket() function
+Parameter 	Description
+domain		It represents the address domain of the socket, i.e., whether the socket belongs to the Unix domain or the
+			Internet domain. The Unix domain is used for the two processes that share a common file system, and is
+			represented by the constant AF_UNIX. The Internet domain is used for any two hosts on the Internet, and is
+			represented by the symbol constant AF_INET.
+type		It represents the socket type. The socket can be a stream socket in which characters are read in a continuous
+			stream (represented by the symbolic constant SOCK_STREAM) or a datagram socket in which data is
+			transmitted in the form of a block of messages (represented by the symbolic constant SOCK_DGRAM).
+protocol	It represents the protocol used by the socket, i.e., whether it uses the TCP or UDP protocol. The stream
+			socket uses TCP protocol, and the datagram socket uses UDP protocol. If a protocol is not specified, the
+			default protocol that supports the specified socket type is considered.
+
+On its success, the socket() function call returns a socket handle or socket descriptor, which is then used for managing the socket.
+
+The following statement creates a new datagram socket for the Internet domain address.
+sockhandle = socket(AF_INET, SOCK_DGRAM, 0);
+if (sockhandle < 0) perror("Error: Socket could not be created");
+
+Binding sockets to addresses
+
+In order to bind a socket to an address, the bind() function is used. This function is used only by the servers.
+
+int bind(int s, const struct sockaddr *saddr, int saddrlen)
+
+Brief description of the parameters used in the bind() function
+Parameter	Description
+s			It represents the socket descriptor.
+saddr		It represents the pointer to the socket data structure, sockaddr. sockaddr refers to
+			the address to which the socket is to be bound. Besides sockaddr, sockaddr_in structure
+			can also be used. sockaddr_in is a structure that contains an Internet address.
+saddrlen	It represents the size of the socket address, sockaddr.
+
+The following is a sample socket data structure, sockaddr:
+struct sockaddr {
+u_char sadd_len; /* total length of the socket address */
+sa_family_t sadd_family; /* address family */
+char sadd_data[20]; /* actual address bytes are stored here */
+};
+
+The socket data structure that is used for keeping the Internet address sockaddr_in may appear in the following manner:
+struct sockaddr_in{
+short sin_family; /* must be AF_INET to represent internet domain address */
+struct in_addr sin_addr;
+u_short sin_port;
+char sin_zero[8];
+};
+
+Listening for connections
+
+For listening on the sockets for the connections, the listen() system call is used.
+
+int listen(int s, int backlog);
+
+s represents a stream socket descriptor and backlog represents the size of the backlog
+queue, that is, the number of incoming requests that are waiting for the connections.
+The maximum permissible size for this queue is five.
+
+Accepting connections
+
+The system call that is used for accepting socket connections is accept.
+
+int accept(int s, struct sockaddr *saddr, int *saddrlen);
+
+Brief description of the parameters used in the accept() function
+Parameter					Description
+s							It represents the socket descriptor.
+saddr						It represents the pointer to the socket
+data structure sockaddr.	It refers to the address to which the socket is to be bound.
+saddrlen					It represents the size of the address.
+
+On success, the accept() system call returns the socket descriptor that is valid for the particular connection and on failure, it returns −1.
+
+Connecting to sockets
+
+The system call that is used for connecting to the socket is connect().
+
+int connect(int s, const struct sockaddr *srvr, int saddrlen);
+
+Brief description of the parameters used in the connect() function
+Parameter	Description
+s			It represents the stream socket descriptor.
+srvr		It represents the pointer to the sockaddr data structure. It refers to the address to which the socket is to be bound.
+saddrlen	It represents the size of the address.
+
+When successful, the connect() system call returns 0 and establishes a socket connection
+that is ready for performing reading and writing functions. 
+On its failure, the system call returns −1.
+
+Shared Memory
+
+The functions used in implementing shared memory are as follows:
+mmap()		It implements the shared memory.
+shmget()	It accesses a shared memory segment.
+shmctl()	It assigns ownership of the shared memory segment to the specifi ed user. It can also be used to change the permissions and other characteristics of the shared memory segment. This function can even be used to destroy the memory segment.
+shmat()		It attaches a shared segment to a process address space. Depending on the permissions, the attached process can access, read, and write to the attached segment.
+shmdt()		It detaches a shared segment from the process address space.
+
+Accessing shared memory segments
+
+The function shmget() is used to access a shared memory segment.
+
+int shmget(key_t key, size_t size, int shmemflg);
+
+Brief description of the parameters used in the shmget() function
+Parameter	Description
+key			It represents the access value associated with the semaphore ID.
+size		It represents the size of the requested memory segment in bytes.
+shmemflg	It represents the initial access permissions and creation control flags.
+
+On success, the shmget() function returns the shared memory segment ID.
+
+The function call to access a 1K segment with 755 permissions is as follows:
+key_t key;
+int shmemid;
+key = ftok("/home/bintu/a.txt", 'R');
+shmemid = shmget(key, 1024, 0755 | IPC_CREAT);
+
+Attaching segments to address space
+
+void *shmat(int shmemid, void *shmaddrspc, int shmemflg);
+
+Brief description of the parameters used in the shmat() function
+Parameter	Description
+shmemid		It represents the shared memory ID.
+shmaddrspc	It represents the address space. It is better to keep the value of this argument as 0 and to let the operating system find the address space.
+shmemflg	It represents the type of access desired on the address space. For read-only access, the value of this flag is set to SHM_RDONLY; otherwise, a value of 0 is assigned to this parameter.
+
+On success, the shmat() function returns the pointer to the shared memory segment; otherwise, it returns −1.
+
+The following code is used to get a pointer to a shared memory segment.
+key_t key;
+int shmemid;
+char *ptrmemseg;
+key = ftok("/home/bintu/a.txt", 'R');
+shmemid = shmget(key, 1024, 0755 | IPC_CREAT);
+ptrmemseg = shmat(shmemid, (void *)0, 0);
+if (ptrmemseg == (char *)(-1))
+	perror("Error: Address space could not be attached to the memory segment");
+
+Reading and writing into shared memory segments
+
+The following statement shows how to read the content from the shared memory segment that is indicated by the pointer ptrmemseg:
+printf("Content in shared memory segment: %s\n", ptrmemseg);
+We use the following statement to write into the shared memory segment:
+printf("Enter your name ");
+gets(ptrmemseg);
+
+Detaching segments from address space
+
+int shmdt(void *shmaddrspc);
+
+shmaddrspc represents the address space with which the memory segment was attached
+and the one that we got by calling the shmat() function. 
+On success, the shmdt() function returns 0; otherwise, it returns −1.
+
+Altering permissions of memory segments
+
+int shmctl(int shmemid, int cmd, struct shmemid_ds *buf);
+
+Brief description of the parameters used in the shmctl() function
+Parameter	Description
+shmemid		It represents the ID of the shared memory segment.
+cmd			It represents the command that we wish to apply to the memory segment.
+			SHM_LOCK	It locks the specified shared memory segment.
+			SHM_UNLOCK	It unlocks the shared memory segment.
+			IPC_STAT	It returns the status information contained in the control structure and places it in the buffer pointed to by buf.
+			IPC_SET		It sets the user ID, group ID, and access permissions.
+			IPC_RMID	It removes or destroys the shared memory segment.
+buf			It represents a structure of the type struct shmid_ds.
+
+In the following code snippet, we create a memory segment, attach it to the process address space, write some content into the memory segment, and finally, destroy it:
+
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+key_t key;
+int shmemid;
+char *ptrmemseg;
+int cmd;
+struct shmid_ds shmid_ds;
+int returnflag;
+key = ftok("/home/bintu/a.txt", 'R');
+shmemid = shmget(key, 1024, 0755 | IPC_CREAT);
+ptrmemseg = shmat(shmemid, (void *)0, 0);
+if (ptrmemseg == (char *)(-1))
+	perror("Error: Address space could not be attached to the memory segment");
+printf("Enter your name ");
+gets(ptrmemseg);
+cmd=IPC_RMID;
+if ((returnfl ag = shmctl(shmemid, cmd, shmid_ds)) == -1) {
+	perror("The shared memory segment could not be removed");
+	exit(1);
+}
+

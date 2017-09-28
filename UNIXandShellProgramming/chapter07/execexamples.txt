@@ -1,0 +1,98 @@
+/* exec(): Replacing Executable Binaries with New Processes
+ *
+ * man 3 exec
+ *
+ * exec(filename, *argv) Loads a file and executes it
+ *
+ * The prototypes:
+ * int execl(const char *path, const char *arg0 [, arg1, ..., argn], NULL)
+ * int execv(const char *path, char *const argv[]);
+ * int execle(const char *path, const char* arg0 [, arg1, ..., argn], NULL, char *const envp[])
+ * int execve(const char *path, char *const argv[], char *const envp[]);
+ * int execlp(const char *path, const char *arg0 [, arg1, ..., argn], NULL)
+ * int execvp(const char *path, char *const argv[])
+ *
+ * arg0, arg1, … , argn represents the arguments to be passed to the new process—these arguments are pointers to NULL terminated strings.
+ * A NULL pointer terminates the argument list.
+ * path refers to the binary filename along with its path.
+ * argv is an array of character pointers that point to the arguments themselves. You may recall that arguments are character pointers to NULL-terminated strings.
+ * envp represents an array of character pointers to NULL-terminated strings. These strings define the environment for the new process. The envp array is also terminated by a NULL pointer.
+ *
+ * When the binary file is transformed to a process, that process replaces the process that executed the exec() system call (a new process is not created).
+ * The exec() system call returns −1 on failure.
+ *
+ * Letters added to the end of exec indicate the type of arguments supplied to it.
+ * For example,
+ * l represents a list of arguments,
+ * v represents a vector—array of character pointers (argv),
+ * e represents environment variable list,
+ * and p indicates that the environment variable PATH be used while searching for the executable files.
+ *
+*/
+
+/* (a) The following example executes the ls command, specifying the path name of the
+executable (/bin/ls) and using the argument, -l for the long format. The execl() call
+initiates the command or program in the same environment in which it is operating. */
+
+#include <unistd.h>
+int main ()
+{
+	...
+	execl ("/bin/ls", "ls", "-l", (char *)0);
+}
+
+/* (b) The following command uses the execl() call. In this system call, we have to specify the
+environment for the command (ls) using the env argument. */
+
+#include <unistd.h>
+int main ()
+{
+	char *env[] = { "USER=chirag", "PATH=/usr/bin", (char *) 0 };
+	...
+	execle ("/bin/ls", "ls", "-l", (char *)0, env);
+}
+
+/* (c) The following example uses the execlp() call. The call searches for the location of the ls
+command among the directories specified in the PATH environment variable. */
+
+#include <unistd.h>
+int main()
+{
+	...
+	execlp ("ls", "ls", "-l", (char *)0);
+}
+
+/* (d) The following example uses the execv() call. In this call, the arguments to the ls
+command are passed through the args array. */
+
+#include <unistd.h>
+int main()
+{
+	char *args[] = {"ls","-l", (char *) 0 };
+	...
+	execv ("/bin/ls", args);
+}
+
+/* (e) The following example uses the execve() call. In this call, the environment for the
+command through the env argument and the arguments to the command are passed through the args array. */
+
+#include <unistd.h>
+int main()
+{
+	char *args[] = {"ls","-l", (char *) 0 };
+	char *env[] = { "USER=chirag", "PATH=/usr/bin", (char *) 0 };
+	...
+	execve ("/bin/ls", args, env);
+}
+
+/* (f) The following example uses the execvp() call. The command searches for the location of
+the ls command among the directories specified by the PATH environment variable. In
+addition, the arguments to the command are passed through the args array. */
+
+#include <unistd.h>
+int main()
+{
+	char *args[] = {"ls","-l", (char *) 0 };
+	...
+	execvp ("ls", args);
+}

@@ -1,0 +1,128 @@
+LANGUAGE DEVELOPMENT TOOLS—YACC, LEX, AND M4
+
+Yacc	This compiler reads the grammar specifications and accordingly generates parsing tables and driver routines.
+Lex		It searches for the required regular expressions in a file, takes appropriate actions against them, and produces programs that are used in a simple lexical analysis of the text.
+M4		It is a macro processor that reads the given m4 template as well as expands and processes macros in the input file to produce an output.
+
+Yet Another Compiler–Compiler
+
+Yet another compiler–compiler (yacc) is a compiler that reads the grammar specifications in he specifi ed file and generates parsing tables and driver routines to the file y.tab.c.
+
+yacc [ -b file_prefix ] [-d] [-l] [-v] [ -Q [y | n ] ] [ -p sym_prefix ] file
+
+Brief description of options used in the yacc command
+Option			Description
+-b file_prefix	It uses the given file_prefix as the prefix for all output files. By default, the prefix for all output files
+				is y. By using this parameter, the code file, y.tab.c, the header file, y.tab.h, and the description file,
+				y.output, will be changed to file_prefix.tab.c, file_prefix.tab.h, and file_prefix.output, respectively.
+-d				It generates the file y.tab.h with the #define statements that associate the yacc’s token codes with the user-declared token names.
+-l				The code produced in y.tab.c will not contain any #line directives. The #line directives help the
+				C compiler in relating errors in the generated code with the original code. Hence, the -l option is used when debugging is complete.
+-v				It generates the file y.output, which contains a description of the parsing tables and other diagnosed information.
+-Q [y|n]		-Qy writes the version information about yacc in y.tab.c. The -Qn option (default) writes no version information.
+-p sym_prefix	It changes the prefix prepended to yacc-generated symbols to the string represented by sym_prefix. The default prefix is the string yy.
+File			It represents the filename with the complete path for which parsing tables and driver routines should be created.
+
+Lexical Analyser
+
+Lexical analyser ( lex) takes an input stream and generates programs that can be used
+in a simple lexical analysis of the text. The input file contains regular expressions and
+the actions that are to be executed when expressions are found in the input stream. For
+example, the following command produces the C source by the name lex.yy.c for the lexical analyser:
+lex a.l
+
+lex [-n] [-t] [-v] file
+
+Brief description of options used in the lex command
+Option	Description
+-t		It sends the lex’s output to the standard output rather than to the file lex.yy.c.
+-v		It prints a one-line summary of the statistics of the generated analyser.
+-n		It suppresses the summary of the statistics written with the -v option (default).
+file	It represents the input filename.
+
+The generated C source can be compiled as shown here:
+% cc lex.yy.c -ll
+
+The following lex program converts upper case to lower case, removes blanks at the end of lines, and replaces multiple blanks with single blanks:
+%%
+[A-Z] putchar(yytext[0]+'a'-'A');
+[ ]+$
+[ ]+ putchar(' ');
+
+Assume the C program is as follows.
+{
+int a=10;
+printf("%d\n",a);
+}
+
+The lexical analyser will break the input stream into a series of tokens as described here.
+{
+int
+a
+=
+10
+;
+printf
+(
+"%d\n"
+,
+a
+)
+;
+}
+
+m4
+
+m4 is a Unix macro processor. It considers an m4 template as input and after having
+expanded and processed the macros, it produces output on the standard output. Macros can
+be either built-in or user defined, and can take any number of arguments. The m4 has builtin
+functions that are used for including files, running commands, managing text, performing computation, and so on.
+
+m4 [-e] [-s] [ -Dname [=val]] [-U name] [filename]
+
+Brief description of options used in the m4 command
+Option			Description
+-e				It operates interactively. Interrupts are ignored and the output is unbuffered.
+-Dname[=val]	It defines the given names to the specified val. If the val is not specified, the names are defined to NULL.
+-U name			It undefines, i.e., deletes the defined names.
+-s				It enables line sync output for the C preprocessor.
+Filename		It represents the text file that is to be processed. If no filename is given, the standard input is read.
+
+Creating macros
+
+Macros can be created with the following syntax:
+name(arg1,arg2, ..., argn)
+
+The m4 comes with an initial set of built-in macros. In order to create new macros, the define() macro is used.
+The following statement shows how a macro is created:
+define(USA, United States of America)
+
+To suppress a newline character, we use the ‘delete to newline’ (dnl) macro shown here:
+define(USA, United States of America)dnl
+
+The following input is provided to m4:
+define(USA, United States of America)
+I live in USA
+'USA' stands for USA
+It will then give the following output:
+I live in United States of America
+'USA' stands for United States of America
+
+In order to give definitions on the command line, the -D option is used in the following example:
+m4 –D USA="United States of America" a.m4
+
+The hash character (#) is used for comments; the comments are echoed to the output.
+Quoted strings are also used in defining macros.
+define(USA, 'United States of America')
+While expanding the macros, the quotes will be stripped off. The quoted strings can also include newline characters:
+define(USA, 'United States
+of
+America')
+
+The following input is provided to m4:
+I live in USA
+The term USA will then be expanded as follows:
+I live in United States
+of
+America
+

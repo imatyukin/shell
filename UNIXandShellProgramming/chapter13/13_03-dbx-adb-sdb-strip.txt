@@ -1,0 +1,292 @@
+DEBUGGER TOOLS
+
+dbx
+
+dbx is an interactive, command-line debugging tool. It can be used to ascertain the location
+of the bug in our program, the flow of execution, memory consumption by different parts of
+the program, etc.
+
+dbx [ options ] [ object_file [ core_file ]]
+
+Brief description of the options used in the dbx command
+Option	Description
+-c cmd	It runs dbx command after initialization.
+- pid	It debugs a currently running program by specifying its process ID.
+-r		It executes the specified object_file and waits for the user’s response from the keyboard.
+-s file	It reads initialization commands from the start-up file dbxinit.
+
+(a) $ dbx a.out core
+This statement debugs the object file a.out and the core file.
+(b) $ dbx - 1201
+This statement debugs the running program whose process identifi er (PID) is 1201.
+In order to debug a program, first compile it with the -g flag and then invoke the debugger with the following syntax:
+dbx object_filename
+At the dbx prompt, execute the run command:
+dbx> run
+In order to pass arguments or redirect the input or output of our program, we use the following syntax:
+dbx> run [arguments][ >output_file ][ <input_file ]
+Here, output_file and input_file are meant for providing desired redirections to the dbx tool.
+
+Setting breakpoints
+
+dbx> stop in calculate
+This statement places a breakpoint in the function calculate.
+dbx> stop at "area.c":10
+This statement places a breakpoint at line 10 in the source file area.c.
+
+Viewing call stacks
+
+To see the intermediate results, we usually display the values of the variables or expressions at a breakpoint using the print command:
+dbx> stop at "area.c":10
+dbx> run
+dbx> where
+[1] printf(0x10938, 0x20a84, 0x0, 0x0, 0x0, 0x0), at 0xef763418
+=>[2] printf(msg = 0x20a84 "welcome\n"), line 6 in "area.c"
+[3] main(argc = 1, argv = 0xefffe93c), line 10 in "area.c"
+dbx> print a
+These statements place a breakpoint at line 10 in the source file area.c. The source file is
+run until the breakpoint, the stack trace is displayed at the breakpoint, and the value of the
+variable, a, is displayed at the breakpoint.
+
+adb
+
+adb is a general-purpose debugger. It enables us to view the core fi les resulting from aborted
+programs and to display output at the given addresses in order to isolate the statements
+resulting in an error. adb is invoked through the following syntax:
+adb object_file corefile
+Here, object_file is an executable Unix file, and corefile is a core image file.
+
+$ adb a.out core
+A hyphen (-) is used to ignore a filename. The following statement is used to specify only the core image file.
+$ adb - core
+We can examine locations in both the files:
+?:	It is used to examine the contents of the object_file.
+/:	It is used to examine the corefile.
+
+address [?][/] format
+
+Brief description of the characters representing the display format in the adb command
+Character	Description
+b			It represents a byte.
+c			It represents a character.
+o			It represents an octal.
+d			It represents a decimal.
+f			It represents a floating point.
+i			It represents an instruction.
+s			It represents a null-terminated character string.
+a			It represents the value of a dot.
+u			It represents an unsigned integer.
+n			It represents a newline.
+r			It represents a blank space.
+
+(a) 0193?i
+It sets a dot (current address) to octal 193 and prints the instruction at that address.
+(b) .,5/b
+It prints five bytes starting at the dot.
+(c) .,2/d
+It prints two decimal numbers starting at the dot.
+When used with the ? or / requests, the current address can be advanced further by typing a newline, and it can be decremented by typing ˆ.
+
+sdb
+
+The symbolic debugger (sdb) is used for examining core images of programs and for finding
+and removing bugs from them. When debugging a core image, sdb indicates the line(s)
+that are responsible for the error in the program, and enables us to access all the variables
+symbolically and check their status to isolate what went wrong.
+
+sdb [ options ] [ object_file [ core_file [ dir ]]]
+
+Brief description of the options used in the sdb command
+Options	Description
+-e		It ignores symbolic data.
+-w		It makes the specified object_file and core_file writable.
+-W		It suppresses warning messages for older files.
+
+Brief description of the commands used in the sdb command
+Command					Description
+t						It displays the stack trace of the suspended program.
+T						It displays the top line of the stack trace.
+variable/				It displays the value of the specified variable.
+address/ and address:?	It displays content beginning at the specified address.
+line?					It displays machine instruction corresponding to the given line.
+variable=				It displays the address of the specified variable.
+variable!value			It assigns value to the specified variable.
+x						It displays the machine registers and the machine instructions.
+X						It displays the current machine instruction.
+e filename				It changes the current source file to the specified filename.
+/regular expression// and ?regular expression??	It searches for instances of the specified regular expression in source files.
+p						It displays the current line.
+z						It displays 10 lines starting at the current line. It also advances the current line by 10.
+w						It displays 10 lines around the current line.
+number					It sets the current line to the specified line number.
+count+					It advances the current line by the specified count. It also displays the new current line.
+count-					It takes the current line back by the specified count. It also displays the new current line.
+r arguments				It runs the program with the given arguments.
+R						It runs the program with no arguments.
+c						It continues the execution of a stopped program.
+C						It continues the execution of a stopped program and passes the signal to the program that stopped the program.
+line g					It resumes execution of the stopped program at the specified line.
+s						It runs the program for a single statement.
+S						It runs the program for a single statement but does not stop within the called functions.
+i						It runs the program for one machine instruction and ignores the signal that stopped the program.
+I						It runs the program for one machine instruction and passes the signal to the program that stopped the program.
+k						It kills the program that is being debugged.
+func(arg1,arg2,...)		It calls the function with specified arguments.
+b						It sets a breakpoint.
+B						It displays a list of the current breakpoints.
+line d					It deletes a breakpoint at the given line.
+D						It deletes all breakpoints.
+l						It displays the last executed statement.
+!command				The specified command is interpreted by the shell.
+q						It exits the sdb debugger.
+
+In order to use sdb, we need to compile the source program with the -g option.
+
+The following commands are used for debugging a core image:
+$ cc -g prog.c -o prog
+prog
+Bus error - core dumped
+sdb prog
+main:10: printf("area is ,a);
+*
+
+Printing stack traces
+
+In order to display a list of the function calls that resulted in an error, we use the following t command:
+*t
+compute(a=5,b=10) [prog.c:10]
+calculate(i=16012) [prog.c:50]
+main(argc=1,argv=0x7fffff54,envp=0x7fffff5c)[prog.c:7]
+
+The following example displays the value of the variable area:
+*area/
+
+Through this statement, the value of this variable that exists in the current function
+is displayed. In order to display a variable k from another function, say, compute, we
+need to prefix the function name shown in the following command:
+*compute:k/
+Wild-card characters can be used for finding variables. Similarly, * can be used to match
+any number of characters, and ? can be used to match any single character.
+
+Brief description of the commands used in the sdb command
+Command			Description
+*a*/			It displays all variables beginning with the character ‘a’.
+*a??/			It displays variables that consist of three characters and which begin with ‘a’.
+**/				It displays all variables.
+*compute:a*/	It displays all variables in the compute function that begin with the character ‘a’.
+**.*/			It displays all the variables of each function.
+
+Setting and deleting breakpoints
+
+Breakpoints can be set at any line in a program that is compiled with the -g option.
+The following methods are used for setting breakpoints:
+*10b		It sets a breakpoint at line 10 in the current program.
+*compute:b	It sets a breakpoint at line 1 of the compute function.
+*b			It sets a breakpoint at the current line.
+Here, character ‘b’ is used for placing breakpoints.
+
+Ways of deleting breakpoints
+
+For deleting breakpoints, character ‘d’ is used.
+
+(a) *10d—It deletes the breakpoint at line 10 in the current program.
+(b) *compute d—It deletes the breakpoint from the compute function.
+In order to delete breakpoints in an interactive manner, character ‘d’ is used alone without
+any line number. Each breakpoint location will be displayed, and the user will be asked
+for confirmation. If the user enters y or d, the displayed breakpoint will be deleted. The
+B command prints a list of the current breakpoints, and the D command deletes all the breakpoints.
+
+Running programs
+
+The r command is used to run a program with the specified arguments.
+
+*r arguments
+
+If no arguments are specified in this statement, the arguments from the last execution are
+used. In order to run a program with no arguments, the R command is used. Execution may
+be resumed at a specified line with the g command. 
+For example, the following statement resumes the execution at line 10:
+*10g
+
+The s command is used to run the program for a single statement. The S command is similar
+to the s command, but it does not stop within the called functions, that is, the S command
+excludes called functions from debugging and debugs only the calling routines.
+
+In order to test function(s), it can be called with different arguments. 
+The following statement calls the compute function with the three arguments p, q, and r:
+*compute(p,q,r)
+*compute(p,q,r)/m
+
+Brief description of the characters that decide the format of the result of the compute function
+Format		Description
+character
+c			Character
+d			Decimal
+u			Unsigned decimal
+o			Octal
+x			Hexadecimal
+f			32-bit single-precision floating point
+g			64-bit double-precision floating point
+
+In order to display the machine instructions associated with line 10 in the main function,
+the following command is used:
+*main:10?
+
+The following statement displays the contents of address 0x5038:
+*0x5038:?
+
+In order to set a breakpoint at the given address, say 0x5038, the following command is given:
+*0x5038:b
+
+In order to exit sdb, the q command is used.
+
+The following example assigns a value to the given variable:
+*variable!value
+
+sdb also automatically performs a sequence of commands at a breakpoint and continues with its execution.
+The following syntax is used for doing so:
+[line] b [command;command;...],
+Here, a breakpoint is placed at the specified line.
+
+the following statement places a breakpoint at statement 10, prints the stack trace and the value of the variable area:
+*10b t;area/
+
+strip: DISCARDING SYMBOLS FROM OBJECT FILES
+
+The strip command discards all symbols from the specified object files(s).
+
+strip [-R sectionname |--remove-section=sectionname] [-s|--strip-all]
+[--strip-debug] [-K symbolname |--keep-symbol=symbolname] [-N symbolname
+|--strip-symbol=symbolname] [-o filename] [-p|--preserve-dates] [-w|--
+wildcard] object_filename
+
+Brief description of the options used in the strip command
+Option											Description
+-R section_name | --removesection=section_name
+												It removes the specified section_name from the output file. This option can be used several times to remove more sections.
+-s | --strip-all								It removes all symbols.
+--strip-debug									It removes only debugging symbols.
+-K symbol_name | --keepsymbol=symbol_name
+												It keeps only the specified symbol_name from the source file. 
+												This option can also be used as many times as needed if we want to keep more symbols.
+-N symbol_name | --stripsymbol=symbol_name
+												It removes the specified symbol_name from the source file. 
+												This option can also be used more than once.
+-o filename										It puts the stripped output in the specified filename, rather than replacing the original file.
+-p| --preserve-dates							It preserves the access and modification dates of the file.
+-w | --wildcard									It enables us to use wild-card characters in specifying symbol names.
+												The characters ?, *, \, and [ ] can be used while specifying symbol names.
+												The ! (negation symbol) can be used to reverse the meaning.
+object_filename									It represents the object file from which we want to remove symbols.
+
+VERSION-CONTROL SYSTEMS
+
+Manual Version Control
+
+Automated Version Control
+
+The following Unix tools are used for version control:
+Source code control system (SCCS)
+Revision control system (RCS)
+Concurrent version system (CVS)
+

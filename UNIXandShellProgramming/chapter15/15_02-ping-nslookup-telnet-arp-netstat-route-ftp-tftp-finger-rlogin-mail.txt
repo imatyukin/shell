@@ -1,0 +1,213 @@
+ping
+
+The ping command is used for checking whether the remote host is responding or not.
+
+$ ping host_name/ip-address
+
+$ ping google.com
+
+nslookup
+
+nslookup maps the name servers to the IP addresses and vice versa.
+The default name server for a machine can be found in the /etc/resolv.conf file.
+
+nslookup <machine name>
+
+(a) % nslookup bmharwani.com
+(b) % nslookup 185.66.15.2
+
+telnet
+
+telnet is a utility that is used to connect to and work on a remote Unix machine. 
+It enables users to log in and work on a remote computer. 
+The client program for telnet is telnet, whereas its server program is telnetd.
+
+$ telnet bmharwani.com
+
+arp
+
+The arp utility displays and modifies the Internet-to-Ethernet address translation tables that are used by the address resolution protocol (ARP).
+
+arp [-n] [ -a] [-d hostname [ pub]] [-s hostname ethernet_addr [ temp] [
+blackhole | reject] [ pub [ only]]] [ -S hostname ethernet_addr] [-f filename]
+
+Different options of arp and their description
+Option				Description
+-a					It displays all the current ARP entries.
+-d hostname [pub]	It deletes an entry for the specified hostname. If the pub keyword is specified, only the ‘published’ ARP entry for the given hostname will be deleted.
+					This option can be combined with the the -a option to delete all entries.
+-n					It depicts network addresses as numbers. By default, arp displays the addresses symbolically.
+-s hostname ethernet_addr [ temp] [ blackhole | reject] [ pub [ only]]
+					It creates an ARP entry for the specified hostname with the given Ethernet address ethernet_addr.
+					temp		The newly created ARP entry will be temporary in nature. If this option is not used, the entry will be permanent.
+					pub			The newly created ARP entry will be ‘published’, i.e., this system will act as an ARP server.
+					only		It creates a published (proxy only) entry—the entry that is created automatically if a routing table entry for the hostname already exists.
+					reject		It discards the traffic to the host, and the sender will be notified that the host is unreachable.
+					blackhole	It discards the traffic to the host but the sender is not notified.
+-S hostname ethernet_addr
+					This is similar to the -s option with a difference that any existing ARP entry for this host will be deleted first.
+-f filename			The information in the file is used for setting multiple entries in the ARP tables.
+
+netstat
+
+The netstat utility displays network connections, routing tables, and interface statistics.
+
+The following command is used for displaying network connections:
+% netstat -a | more
+The following command is used for displaying routing tables:
+% netstat -r
+The following command is used for displaying interface statistics:
+% netstat -i
+
+route
+
+The route utility shows as well as manipulates the IP routing table.
+
+Showing the routing table:
+% route
+Tracing the route to the machine on the same subnet:
+% traceroute bintuPC
+Manipulating the routing table:
+% route add -host bintuPC
+Showing the updated routing table:
+$ route
+
+ftp
+
+The term FTP stands for file transfer protocol and is used for uploading and downloading files from one computer to another.
+
+For FTP, we need two programs: client FTP and server FTP. The client FTP program is ftp, and the server FTP program is ftpd.
+TCP port 21 is used for sending commands; port 20 is used for the data stream.
+
+$ ftp host_name/ip-address
+
+Commands used for performing FTP operations
+Command				Description
+put filename		It uploads filename from a local machine to the remote host.
+get filename		It downloads filename from the remote host to a local machine.
+mput file list		It uploads more than one file from a local machine to the remote host.
+mget file list		It downloads more than one file from the remote host to a local machine.
+prompt off			It turns off the prompts that are displayed while uploading or downloading movies using the mput or mget commands.
+prompt on			It turns on prompt.
+dir					It lists the files in the current directory of the remote host.
+cd directory_name	It changes directory to the specified directory_name on the remote host.
+lcd directory_name	It changes directory to the specified directory_name on the local machine.
+quit				It logs out from the remote host.
+
+Trivial File Transfer Protocol
+
+The trivial file transfer protocol (TFTP) is a UDP-based file-transfer program.
+
+% tftp localhost
+tftp> get /http/products.html
+% tftp> quit
+
+finger
+
+The finger program can be used to display detailed information, that is, username, full name,
+location, login time, and office telephone number of every user currently logged in to a system.
+This command can be used to find users on a local machine as well as on a remote machine.
+
+% finger @bmharwani.com
+
+% finger ravi@bmharwani.com
+
+rlogin
+
+rlogin stands for remote login and is used to establish a remote connection between our terminal and the remote machine.
+Once logged in to the remote host, we can perform all the permissible tasks on the remote host.
+
+Different options available with the rlogin command
+Option		Description
+-8			It passes eight-bit data across the net instead of seven-bit data.
+-e char		It enables us to specify a different escape character, which is ‘~’ by default. The escape character can be defined either as a literal character or as an octal value in the form \nnn.
+-l username	It is used to specify a different username for the remote host; otherwise, the local username is used at the remote host.
+-E			It stops any character from being recognized as an escape character.
+hostname	It represents the remote machine to which the connection has to established.
+
+rlogin [-8] [-e char ] [-l username][-E] hostname
+
+The following are a few more network-related commands:
+systat		It provides status information about our computer to other computers on the network.
+ifconfig	It configures and displays interface configuration.
+% ifconfig -a
+traceroute	It prints the route that the packets take to the network host.
+% traceroute www.google.com
+
+mail COMMAND
+
+The mail command is a mail processing system that is used to send and receive mails.
+
+mail [-v][-s subject] [-c users_address] [-b users_address] [-f filename]
+
+Different options available with the mail command
+Option 				Description
+-v					It represents the verbose mode. The information related to e-mail delivery is displayed on the screen.
+-s subject			It is used to specify the subject of the mail. If the subject consists of more than one word, it should be enclosed in quotes.
+-c users_address	It is used to send carbon copies to the list of users. User IDs should be comma separated.
+-b users_address	It is used to send blind carbon copies to the list of users.
+-f filename			It reads the contents of our mail box or the specified filename for processing. On quitting the mail command, the undeleted messages are written back to the file.
+
+Sending E-mails
+
+mail userid
+
+Reading Mails
+
+$mail
+
+Sending Replies
+
+In order to send a reply to a mail, type the R command on the mail prompt.
+
+Mail Commands
+
+List of mail commands
+Command						Description
+t [message_list]			It types or displays messages.
+n							It displays the next message.
+e [message_list]			It edits messages.
+f [message_list]			It displays line headers of messages.
+d [message_list]			It deletes messages.
+s [message_list] filename	It appends messages to the specified filename.
+u [message_list]			It undeletes the messages.
+r [message_list]			It replies to the messages by the sender as well as to other recipients.
+R [message_list]			It replies to the messages by the sender only.
+m [user_list]				It mails the specified users. The user IDs should be comma separated.
+q							It quits the mail command, deleting all the marked messages forever.
+x							It quits the mail command and returns all our mail messages to our mailbox, without deleting any messages.
+h							It prints the active message headers.
+ch [directory]				It changes to the specified directory. If the directory is not specified, by default, we will be taken to the home directory.
+
+List of mail commands for composing messages
+Command				Description
+~?					It displays the list of all tilde (~) commands.
+~p					It lists the text of the message.
+~s subject			It sets or changes the current subject to the specified subject.
+~t email_nameslist	It adds the e-mail names in the specifi ed email_nameslist to the current list of e-mail names.
+~h					It lists and modifies the subject and e-mail name list.
+~! cmd				It executes the specified Unix command cmd.
+~r filename			It reads the specified filename into the message at the current position.
+~v					It invokes the vi editor to edit the message text.
+~q					It quits the mail command and saves the current message in the file named dead.letter in our home directory.
+
+Saving Messages
+
+In order to save a mail message in a separate file, give the s command at the mail & prompt with the following syntax:
+& s message_number filename
+
+Deleting Messages
+
+In order to mark the e-mail messages for deleting, we give the d command at the & prompt with the following syntax:
+& d [message_number] [message_number].....
+
+Undeleting Messages
+
+If we have not yet quit the mail command, we can unmark the e-mail messages that are marked for deletion.
+In order to unmark the messages, we give the u command at the & prompt with the following syntax:
+& u [message_number] [message_number]...
+
+Quitting Mail Command
+
+We can quit the mail command by typing the q command.
+

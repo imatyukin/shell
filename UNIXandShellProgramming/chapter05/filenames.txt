@@ -1,0 +1,1 @@
+/Users/igor/Documents/workspace/shell/UNIXandShellProgramming/chapter5/5_02-find.sh

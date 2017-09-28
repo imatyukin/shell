@@ -1,0 +1,51 @@
+INPUT/OUTPUT MULTIPLEXING
+
+select() System Call
+
+The select() system call enables a program to monitor multiple file descriptors (sockets),
+waiting until one or more of the file descriptors becomes ready for any I/O operation, such
+as reading or writing.
+
+int select(int numfds, fd_set *readfds, fd_set *writefds, fd_set *errfds, struct timeval *timeout);
+
+Brief description of the parameters used in the select() function
+Parameter	Description
+numfds		It represents the number of file descriptors to be monitored. The file descriptors from zero through numfds-1 in the descriptor sets will be monitored.
+readfds		The pointer that points to an object of type fd_set on input specifies the file descriptors to be checked for being ready to read, and on output indicates which file descriptors are ready to read.
+writefds	The pointer that points to an object of type fd_set on input specifies the file descriptors to be checked for being ready to write, and on output indicates which file descriptors are ready to write.
+errfds		The pointer that points to an object of type fd_set on input specifies the file descriptors to be checked for error conditions pending, and on output indicates which file descriptors have error conditions pending.
+Timeout		It defines the time that the select() system call can take before timing out. If the timeout parameter is not a null pointer, it specifies a maximum interval to wait for the select() to be completed. 
+			If the specified time interval expires and no file descriptor is found to be ready, the systems call returns. If the timeout parameter is a null pointer, the call to select() will block indefi nitely until at least one descriptor is ready for the desired operation.
+			
+Brief description of the macros used in the select() function
+Macro 							Description
+FD_SET(int fd, fd_set *set);	It adds the given fd to the specified set.
+FD_CLR(int fd, fd_set *set);	It removes the given fd from the specified set.
+FD_ISSET(int fd, fd_set *set);	It returns true if the fd is in the specified set.
+FD_ZERO(fd_set *set);			It clears all entries from the specified set.
+
+pselect() System Call
+
+Another system call that is similar to the select() system call and which helps in I/O multiplexing is the pselect() system call.
+
+int pselect(int numfds, fd_set *readfds, fd_set *writefds, fd_set *errfds, const struct timespec *timeout, const sigset_t *sigmask);
+
+The following example waits for 5.5 seconds for the user to press a key.
+#include <stdio.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <unistd.h>
+void main(void)
+{
+	struct timeval tv;
+	fd_set readfds;
+	tv.tv_sec = 5;
+	tv.tv_usec = 500000;
+	FD_ZERO(&readfds);
+	FD_SET(0, &readfds);
+	select(1, &readfds, NULL, NULL, &tv);
+	if (FD_ISSET(0, &readfds))
+		printf("A key is pressed!\n");
+	else
+		printf("Time expired\n");
+}

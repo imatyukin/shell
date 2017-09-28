@@ -1,0 +1,66 @@
+If Else Statement
+
+if condition
+then
+	block of statements
+[elif condition
+then
+	block of statements ...]
+[else
+	block of statements ]
+fi
+
+TESTING STRINGS
+
+List of Korn shell string operators
+Operator			True if
+-n string			The string is of non zero length
+-z string			The string is of zero length
+string1=string2		The two strings are equal
+string1!=string2	The two strings are not equal
+string=pattern		The pattern matches the string
+string!=pattern		The pattern does not match the string
+string1<string2		string1 is less than string2 alphabetically
+string1>string2		string1 is greater than string2 alphabetically
+
+case...esac STATEMENT
+
+case expression in
+	pattern1 ) statements
+	;;
+	pattern2 ) statements
+	;;
+	* ) statements
+esac
+
+while LOOP
+
+while [[ logical expression ]] ; do
+	statements
+done
+
+break: BREAKING OUT OF LOOPS
+
+break
+
+continue: SKIPPING STATEMENTS IN LOOPS
+
+continue
+
+until LOOP
+
+until [[logical expression]] ; do
+	statements
+done
+
+for LOOP
+
+for variable in set_of_values
+do
+	statements
+done
+
+for (( [expr1]; [expr2]; [expr3] ))
+do
+	statements
+done

@@ -1,0 +1,3 @@
+{
+	print tolower($0)
+}

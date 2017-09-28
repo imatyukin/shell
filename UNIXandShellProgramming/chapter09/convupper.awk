@@ -1,0 +1,3 @@
+{
+	print toupper($0)
+}

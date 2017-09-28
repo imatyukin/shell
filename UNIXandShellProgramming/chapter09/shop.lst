@@ -1,0 +1,10 @@
+101	sales	Sugar	50	16
+102	sales	Tea	55	10
+103	purchase	Coffee	60	15
+101	sales	Sugar	65	52
+102	purchase	Tea	04	50
+103	purchase	Coffee	15	40
+103	sales	Coffee	40	10
+102	purchase	Tea	18	52
+101	sales	Sugar	56	58
+103	sales	Coffee	98	90

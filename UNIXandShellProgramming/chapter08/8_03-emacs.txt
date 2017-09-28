@@ -1,0 +1,75 @@
+# emacs file_to_create/edit
+
+# 1. C-x means to hold down the Ctrl key and press the x key.
+# 2. Esc-x means to hold down the Esc key and press the x key.
+
+# Cursor Movements
+
+# C-x/Esc-x
+
+# Brief description of commands related to cursor movement
+# C-p Moves the cursor one line up
+# C-n Moves the cursor one line down
+# C-f Moves the cursor one character right
+# C-b Moves the cursor one character back
+# C-a Moves the cursor to the beginning of the line
+# C-e Moves the cursor to the end of the line
+# C-v Moves the cursor down a screen
+# Esc-v Moves the cursor up a screen
+# Esc-< Moves the cursor to the beginning of the buffer
+# Esc-> Moves the cursor to the end of the buffer
+# Esc-f Moves the cursor one word forward
+# Esc-b Moves the cursor one word backward
+# Esc-a Moves the cursor back to the beginning of the sentence
+# Esc-e Moves the cursor forward to the end of the sentence
+# Esc-] Moves the cursor one paragraph forward
+# Esc-[ Moves the cursor one paragraph backward
+
+# Quitting Emacs
+
+# C-x C-c
+
+# Dealing with Buffers
+
+# Brief description of commands dealing with buffer
+# C-x C-s Saves the buffer into the file
+# C-x C-w Writes the content of the buffer into a new filename and prompts the user for the new filename
+# C-x C-f Reads a file into a buffer
+# C-x i Inserts contents of a file into the current buffer
+# C-x b Selects another buffer
+# C-x C-b Lists all buffers that are currently active in emacs
+# C-x 2 Splits the screen to show two buffers
+# C-x 1 Goes back to one buffer on screen
+# C-x o Switches the cursor to the other buffer
+
+# Cutting and Pasting
+
+# Brief description of the commands for cutting and pasting
+# C-d Deletes the character at the cursor
+# Esc-d Deletes from the cursor till the end of the word
+# C-k Erases till the end of the line
+# Esc-k Erases till the end of the current sentence
+# C-@ Marks the beginning of the text to cut or copy
+# C-w Cuts the text between the mark and current cursor position
+# Esc-w Copies the text between the mark and current cursor position
+# C-y Pastes the cut or copied content at the cursor position
+
+# Searching and Replacing
+
+# Brief description of commands for searching and replacing text
+# C-s Searches for the given string from the current cursor position in the forward direction in the buffer
+# C-r Searches for the given string from the current cursor position in the backward direction
+# Esc-% Prompts the user for the string to be replaced and the string to replace it with. Before replacing the string, the user will be asked for confirmation and the user can select any of the following keys in response to confirmation:
+# 		1. Space bar: Replaces the string and moves on to the next match
+# 		2. Delete key: Skips without replacing and moves on to the next match
+# 		3. !: Replaces all the remaining matches
+# 		4. Esc key: Stops replacing
+
+# Miscellaneous Commands
+
+# Brief description of the miscellaneous commands in emacs
+# C-g Aborts a partially typed command
+# C-x u Undoes the last change to the buffer
+# C-l Redraws the screen
+# C-h Starts the emacs online help
+# Esc-$ Checks the spelling of the word at that point

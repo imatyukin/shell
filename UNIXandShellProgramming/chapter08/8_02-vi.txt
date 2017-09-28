@@ -1,0 +1,233 @@
+# The three common ways of starting a vi session
+
+# Brief description of the ways to start vi
+# vi filename Opens the specified filename for editing
+# vi + n filename Opens the filename at line n for editing
+# vi +/ pattern filename Opens the filename where the specified pattern appears in the filename
+
+# Creating and Editing Files
+
+# vi {filename}
+
+# vi a.txt
+# vi +10 a.txt
+# vi +/saving a.txt
+
+# Inserting and Appending Text
+
+# List of commands to insert and append text
+# i Inserts text to the left of the cursor
+# a Appends text to the right of the cursor
+# I Inserts text at the beginning of the line
+# A Appends text to the end of the line
+
+# Replacing Text
+
+# List of commands to replace or substitute text
+# r This replaces the character under the cursor.
+# R This replaces the characters beginning with the character under the cursor until the Esc key is pressed, i.e., the overwrite mode remains on until the Esc key is pressed.
+# s This substitutes one character under the cursor and goes into the insert mode. We can also specify the count of the number of characters to substitute.
+# S This replaces the text with a blank line. We can insert new text.
+
+# Inserting and Joining Lines
+
+# List of commands to insert and join lines
+# o It inserts a blank line below the current line.
+# O It inserts a blank line above the current line.
+# J It joins the current line with the line below. Position the cursor anywhere on the line to merge the lines, and press J to join the line below to the current line.
+
+# Exiting and Writing to Files
+
+# Commands to save the file and quit the vi editor
+# :w Writes or saves the content to the file and continues editing, i.e., it does not quit vi
+# :q Quits vi if the file is not modified
+# :x Saves and quits file
+# :wq Writes to the file and also quits vi
+# ZZ Writes to the file and also quits vi
+# :q! Quits vi without saving changes
+
+# Navigating—Line Positioning and Cursor Positioning
+
+# Brief description of line positioning and cursor commands
+# h Moves the cursor one character to the left
+# j Moves the cursor one line down
+# k Moves the cursor one line up
+# l Moves the cursor one character to the right
+# Space bar Moves the cursor one character to the right
+# Backspace Moves the cursor one character to the left
+# $ Moves the cursor to the last character of the line
+# 0 (zero) Moves the cursor to the first character of the line
+# ^ Moves the cursor to the first non-blank character of the line
+
+# Positioning Cursor on Words
+
+# Brief description of commands used for positioning the cursor on words
+# w Moves the cursor to the first character of the next word
+# b Moves the cursor to the first character of the previous word
+# e Moves the cursor to the last character of the next word
+
+# Positioning Cursor on Sentences
+
+# Brief description of commands used for positioning the cursor on sentences
+# ( Moves the cursor to the beginning of the current sentence
+# ) Moves the cursor to the beginning of the next sentence
+
+# Positioning Cursor on Paragraphs
+
+# Brief description of commands used for positioning the cursor on paragraphs
+# { Moves the cursor to the beginning of the current paragraph
+# } Moves the cursor to the beginning of the next paragraph
+
+# Scrolling through Text
+
+# List of commands to scroll through a file
+# ^u Scrolls up half a page
+# ^d Scrolls down one full page
+# ^b Scrolls up one full page
+# ^f Scrolls down one full page
+# ^e Scrolls forward a line
+# ^y Scrolls backward a line
+
+# Marking Text
+
+# List of commands for marking text
+# mk Marks the current location as mark k
+# `k Moves the cursor to the character marked by k
+# 'k Moves the cursor to the fi rst character of the line marked k
+# `` Returns to the previous mark
+# " Returns to the beginning of the line containing the previous mark
+
+# Deleting and Undoing Text
+
+# Brief description of commands to delete and undo delete
+# x Deletes the character at the cursor position
+# nx Deletes n number of characters from the current cursor position
+# X Deletes the character before the cursor position
+# dw Deletes the current word
+# dd Deletes the line where the cursor is
+# ndd Deletes n number of lines
+# D or d$ Deletes a line from the cursor position till the end of the line
+# d^ Deletes a line from the cursor position to the beginning of the line
+# u Undoes the last change and typing u again will redo the change
+# U Undoes all changes to the current line
+
+# Going to Specified Lines
+
+# Brief description of commands for navigating to a specified line
+# G Goes to the last line of the file
+# nG Goes to the nth line of the file
+
+# Searching for and Repeating Search Patterns
+
+# List of commands to search for and repeat desired patterns
+# /pattern Searches for the specified pattern in the forward direction from the cursor position
+# ?pattern Searches for the specified pattern in the reverse direction from the cursor position
+# n Repeats the last search command in the forward direction
+# N Repeats the last search command in the opposite direction
+
+# Searching for Characters
+
+# List of commands to search for a character
+# fx Moves the cursor to the specified character, x, in the forward direction
+# Fx Moves the cursor to the specified character, x, in the backward direction
+# tx Moves the cursor just before the specified character, x, in the forward direction
+# Tx Moves the cursor just after the specified character, x, in the backward direction
+# ; Continues the search specified in the command in the same direction and is used after the fx command
+# , Continues the search specified in the command in the opposite direction and also works after the fx command
+
+# Copying, Changing, Pasting, and Filtering Commands
+
+# Brief description of commands used to copy and paste lines
+# yy Copies the current line
+# Nyy Copies n number of lines
+# yw Copies the current word
+# p Pastes the copied text after the cursor
+# P Pastes the copied text before the cursor
+# cc Blanks out the entire line
+# C or c$ Overwrites the content from the place of the cursor until the Esc key is pressed
+# ! Executes commands external to vi for the purpose of filtering text
+# II Edits the current paragraph
+# tr Deletes or translate the filtered text
+
+# Set Commands
+
+# Brief description of the commands to customize the vi session
+# :set nu Numbers all the lines in the file, beginning from 1
+# :set nonu Turns off line numbering
+# :set ai Sets the auto indent feature
+# :set noai Unsets the auto indent feature
+# :set ic Ignores case when searching
+# :set ro Changes the file type to read only
+# :set list Displays the tabs and carriage returns
+# :set nolist Turns off the list option
+# :set wrapmargin=n Turns on word wrap n spaces from the right margin
+# :25 Moves to the 25th line of the file
+# :5,10d Deletes lines starting from the 5th line to the 10th line
+
+# Reading and Writing across Files
+
+# Brief description of the commands to read and write across files
+# :r filename Places the text from the named file after the current line
+# :nr filename Places the text after the line n from the file
+# :r!command Places the output of the named command below the current line
+# :n1, n2w newfile Writes lines starting from n1 up to n2 to the newfile
+
+# Global Substitution—Find and Replace
+
+# Brief description of the commands to find and replace patterns
+# :s/pattern1/pattern2 Substitutes the first occurrence of pattern1 with pattern2 in the current line
+# :s/pattern1/pattern2/g Substitutes all occurrences of pattern1 with pattern2 in the current line
+# :1,5s/pattern1/pattern2/g Substitutes all occurrences of pattern1 from line 1 to line 5 with pattern2
+# :%s/pattern1/pattern2/g Substitutes all occurrences of pattern1 with pattern2 in the file globally
+
+# Ex Mode—Line Editor Mode
+
+# ex file_name1 [file_name2] [file_name3]
+# vi [filename1] [filename2][filename3]...
+
+# Brief description of the commands used in ex mode
+# :k1 [, k2][p] This displays line k1 of the current file on the screen. If k2 is also supplied, it displays lines in the range k1 to k2 on the screen. The default character, p, stands for printing on the screen. Writing ‘p’ alone will display the current line.
+# :[+] [-] k +k will move k number of lines forward and display it. On the other hand, −k will move back k lines and display that.
+# :s/pattern1/pattern2/[g] This substitutes (replaces) the first pattern1 found in the current line with pattern2. For substituting all pattern1 with pattern2 globally in the current line, use the ‘g’ option.
+# :r filename This reads the specified file and appends its content below the current line in the current file.
+# :w filename This writes the edit buffer into the specified file, i.e., content of the currently open file will be written into the specified file.
+# :n [!] This moves to the next file in the list and makes it the current file. The command is discarded if the current file is modified and not saved. The ‘!’ command discards any changes made to the current file and moves on to the next file.
+# :kn This advances k number of files in the list and makes it the current file
+# :rew [!] This rewinds and opens the first file in the list. The command will be ignored and a warning message will be displayed if the current file is modified and is not yet saved. The ‘!’ mark, when used, discards the changes made to the current file and moves on to the first file in the list.
+# :ar This lists the currently open filenames.
+# :e [!] [+n] filename This opens the specified file for editing. If the current buffer is modified and is not saved, a warning message will be displayed and the command is ignored. The ‘!’ character will discard the changes made in the edit buffer and opens the specified file for editing. If +n is specified, the nth line is set as the current line.
+# :r !commandname This runs the specified command and appends its output to the currently open file.
+# :w This saves the currently open file.
+# :q This quits editing.
+# :q! This quits forcefully, discarding the changes
+
+# Abbreviating Text Input
+
+# :ab abbr text
+# :unab abbr
+# :ab
+
+# Mapping Keys of Keyboard
+
+# :map key_to_map command_to_execute
+# :map! key_to_map command_to_execute
+# :map
+# :map!
+# :unmap key
+
+# Brief description of the commands used in mapping in vi
+# :map key command_sequence Defines the key as a sequence of editing commands
+# :unmap key Disables the sequence of editing commands defined for a key
+# :map Lists the keys that are currently mapped
+
+# Customizing vi Session
+
+# For enabling features in vi, open the .exrc file in home directory
+
+# 1. Lines are auto numbered
+# 2. Auto indentation is enabled
+# 3. Case is ignored while searching for content
+
+# set nu 
+# set ai
+# set ic

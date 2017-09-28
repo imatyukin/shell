@@ -1,0 +1,345 @@
+TEXT-FORMATTING TOOLS
+
+troff	It formats the given document such that it appears similar to a typeset document.
+nroff	It produces output for terminal windows, line printers, and typewriter-like devices.
+
+troff
+
+troff [ -a ] [ -F directory_name ] [-i] [ -T name ] filename
+
+Brief description of options used in the troff command
+Option				Description
+-a					It generates an ASCII version of the formatted output.
+-F directory_name	It searches the given directory, directory_name for font width, or terminal tables. If the directory_name is not specified, the system default directory is used.
+-i					It reads the standard input after all the specified input files are read.
+-T name				It prepares the output for the specified device instead of the default PostScript printer.
+filename			It represents the file that is to be processed.
+
+Brief description of formatting commands used with troff command
+Formatting	Description
+command
+.fi			This fills the text with input (default setting).
+.nf			This does not fill the text. The right margin appears ragged.
+.br			This breaks the filling and starts a new block of text. The same action can be done by starting a line of text with a space.
+.ad			This controls adjustment. Valid arguments are as follows:
+			l: Adjusts only the left margin
+			r: Adjusts only the right margin
+			c: Centres each line
+			b or n: Adjusts both margins
+			.ce n: Centres the next n lines without filling the text
+
+Brief description of units used in space measurement in the troff command
+Option	Description
+I		inch
+c		centimetre
+p		pica
+m		em
+n		en
+p		point
+u		unit
+v		vertical space
+
+$ troff a.txt
+This statement runs troff on the file a.txt.
+
+The output produced by troff is device independent and requires to be post-processed before it can be accepted by most printers.
+The syntax for post-processing the input file is as follows:
+troff filename | postprocessor
+
+To post-process the troff output for the hp laser jet printer, the subsequent statement is used.
+troff filename | hplj
+
+The following command changes the point size of the text on the subsequent lines to 20 points.
+.ps 20
+Hello
+
+The backslash character (\) is used for applying troff commands and for inserting special characters in the text.
+The following statement will make the text appear in 20-point size:
+\s20Hello
+
+The following text will make the text World appear in 25-point size and the text Bye to appear in 15-point size:
+\s+5World\s-5Bye
+
+nroff
+
+nroff [-o pages] [-h] [-i] [-T name] [filename]
+
+Brief description of options used in the nroff command
+Option		Description
+-o pages	It displays only the specified pages. The page numbers can be comma separated and a hyphen can be used to represent a range of pages.
+-h			It uses TAB characters for horizontal spacing.
+-i			It reads the standard input after the input files are read.
+-T name		It prepares output for a device of the specified name. Valid options are as follows:
+			ascii, ascii8, latin1, utf8, nippon, and cp1047
+filename	It represents the document that needs to be formatted for display. If no filename argument is present, nroff reads from the standard input.
+
+nroff a.txt
+This statement formats the file a.txt.
+
+.in 5
+This statement indents the following text by five spaces.
+
+PREPROCESSORS FOR nroff AND troff
+
+tbl	It formats tables into commands and escape sequences that nroff/troff can understand.
+eqn	It typesets mathematical equations and compiles descriptions of equations embedded within troff input files into commands that are understandable by troff.
+pic	It is a graphics language preprocessor that compiles pictures embedded within troff input files into commands that are understandable by troff.
+
+Each of these preprocessors translates codes into nroff/troff requests.
+
+tbl
+
+tbl [options] [filename]
+
+$ tbl file
+As evident from this statement, the commands between each .TS/.TE macro pair (in the file)
+are converted into a printable table. The remaining commands are passed through, unchanged.
+An input file may exhibit coding in the following format.
+.TS H
+options;
+format1
+format2.
+Column Titles
+.TH
+Item1 Item2 Item3
+Item1 Item2 Item3 ...
+.TE
+
+Brief description of macros used in the tbl command
+Macro	Description
+.TS		It starts a table.
+.TE		It ends a table.
+.TS H	It is used when the table extends to more than one page.
+.TH		It is used after column titles to separate them from other data.
+
+Options used with tbl
+
+Brief description of options used in the tbl command
+Option		Description
+center		It centres the table. By default, the table is left justified.
+expand		It expands the table to full page width.
+box			It encloses the table in a box.
+double box	It encloses the table in a double box.
+allbox		It encloses each item of the table in a box.
+tab(x)		It separates the items in the input data by the specified character ‘x’ instead of a tab.
+linesize(n)	It sets the lines to n point size.
+
+Formats used with tbl
+
+Brief description of the key letters used in laying columns and rows in the tbl command
+Keys	Description
+c,C		It centres data within the column.
+r,R		It right justifies data within the column.
+l,L		It left justifies data within the column.
+n,N		It aligns numerical data in the column, i.e., hundredth value will appear below the hundred’s place, tenth value will appear below the ten’s place, unit value will appear below the ones’s place, and so on.
+s,S		It horizontally spans the previous column data into the current column.
+a,A		It aligns text data in the column.
+^		It vertically spans data from the previous row into the current row.
+_,-		It replaces the current data with a horizontal line.
+=		It replaces the current data with a double horizontal line.
+|		It displays a vertical bar. It can be used to display a line at the edge of the table.
+||		It displays a double vertical bar. It can be used to display a double line at the edge of the table.
+
+Brief description of the key specifiers used after key letters while laying columns and rows in the tbl command
+Key specifiers	Description
+b				It makes the data bold.
+i				It makes the data italic.
+fx				It applies the font x.
+p n				It changes the point size to n units.
+v n				It sets the vertical line spacing to n points.
+t				It begins or pushes the vertically spanned data to the top row of range.
+e				It ensures that all columns are of equal width.
+w(n)			It sets a minimum column width to n size, where n can be in any of the troff units. If no unit is given, en units are used.
+n				It sets the amount of separation (in ens) between columns. The default separation is 3 en.
+
+eqn
+
+eqn [ -d xy ] [ -s n ] [ -p n ] [ -m n ] [ filename]
+
+Brief description of options used in the eqn command
+Option		Description
+-d xy		It uses x and y as delimiters for the left and right end, respectively, of the input line.
+-p n		It reduces the size of superscripts and subscripts by n points. The default reduction in size is of 3 points.
+			The subscripts and superscripts are 70% of the size of the surrounding text.
+-s n		It reduces the point size by n points.
+-m n		It sets the minimum point size to n. The eqn will not reduce the size of subscripts or superscripts to a size smaller than n.
+filename	It represents the troff input file. If the filename is not provided or a hyphen (-) is used instead of the filename, the data will be read from the standard input.
+
+The following macros are used in eqn:
+.EQ	It starts typesetting mathematics.
+.EN	It ends typesetting mathematics.
+
+Keywords recognized by eqn
+
+Brief description of the keywords used in the eqn command
+Keyword		Description
+back n		It moves backward horizontally by n units, where n is 1/100th of an em.
+bold		It applies bold style.
+ccol		It centre aligns a column of a matrix.
+cpile		It makes a centrally aligned pile.
+define		It creates a macro or a short name for a frequently used long text.
+delim xy	It defines the characters to mark the left and right ends of an eqn equation. The delimiters can be turned off through delim off statement.
+down n		It moves down n units, where n is 1/100th of an em.
+fat			It widens the current font.
+font x		It switches to the specified font.
+from		It represents the lower limit in summations, integrals, etc.
+fwd n		It moves forward horizontally by n units, where n is 1/100th of an em.
+gfont x		It sets the specified global font for all equations.
+gsize n		It sets the specified global size for all equations.
+italic		It changes style to italic.
+lcol		It left justifi es a column of a matrix.
+left		It creates big brackets, big braces, big bars, etc.
+lineup		It lines up marks in equations on different lines.
+lpile		It left justifies the elements of a pile.
+mark		It remembers the horizontal position in an equation. It is used with lineup.
+matrix		It creates a matrix.
+over		It makes a fraction.
+pile		It makes a vertical pile with elements centred above each other.
+rcol		It right justifies a column of a matrix.
+right		It creates big brackets, big braces, big bars, etc. It should have a matching left.
+roman		It sets the following constant in roman.
+rpile		It right justifies the elements of a pile.
+size n		It changes the size of the font to n units.
+sqrt		It takes the square root of the following equation.
+sub			It starts a subscript.
+sup			It starts a superscript.
+tdefine		It makes a defi nition for the eqn.
+to			It represents the upper limit that is used in summations, integrals, etc.
+up n		It moves up n units, where n represents 1/100th of an em.
+~			It inserts an extra space into the output.
+^			It inserts a space that is equal to one half of the size of the space applied by ~.
+{ }			It is used to combine elements into a unit.
+
+pic
+
+pic [ options] [ filename]
+
+filename represents the input file that will be processed to produce a desired picture. If
+the filename is not provided or a hyphen (-) is supplied for the filename, the data will be read
+from the standard input.
+
+pic macros
+
+Brief description of the macros used in the pic command
+Macro					Description
+.PS [height [width]]	It begins the pic description. The height and width are optional parameters that specify the desired height and width of the picture.
+.PS < filename			Commands will be read from the specifed filename and will be placed in the current statement.
+.PE						It ends the pic description.
+
+We use the following statement to declare a different scale:
+scale = n
+This statement declares that 1 unit is equal to one- nth of an inch.
+
+Brief description of the commands used in the pic command
+Command 						Description
+arc [clk] [options] ["text"]	It draws an arc that is 1/4th of a circle. By default, a counter-clockwise arc is drawn. The clk option is used for drawing a clockwise arc.
+arrow [options] ["text"]		It draws an arrow.
+box [options] ["text"]			It draws a box.
+circle [options] ["text"]		It draws a circle.
+ellipse [options] ["text"]		It draws an ellipse.
+line [options] ["text"]			It draws a line.
+move [options] ["text"]			It moves the position in the drawing.
+spline [options] ["text"]		It draws a line with a slope.
+"text"							It displays text centred at the current point.
+
+Options
+
+Brief description of the options used in the commands of pic command
+Option 					Description
+right [n]				It moves towards the right by n units.
+left [n]				It moves towards the left by n units.
+up [n]					It moves upwards by n units.
+down [n]				It moves downwards by n units. To move diagonally, two directions are used.
+rad n					It creates the primitive (circle, arc, ellipse, etc.) of radius n units.
+diam n					It creates the primitive (circle, arc, ellipse, etc.) of diameter n units.
+ht n					It creates the primitive of height n units.
+wid n					It creates the primitive of width n units. For an arrow, height and width represent the arrowhead size.
+same					It creates the primitive using the same dimensions used in the recent matching primitive.
+at point				It centres the primitive at the specified point.
+from point1 to point2	It draws the primitive from point1 to point2.
+->						It directs the arrowhead forward.
+<-						It directs the arrowhead backward.
+<->						It directs the arrowhead in both directions.
+chop n m				It chops off n units from the beginning and m units from the end of the primitive. Only one argument is used to chop equal units from both ends.
+dotted					It draws the primitive using dotted lines.
+dashed					It draws the primitive using dashed lines.
+invis					It draws the primitive using invisible lines. The default is a solid line.
+then					It continues the given primitive in a new direction. It is used only with lines, splines, moves, and arrows.
+Text 					It displays the text. The text should be enclosed within quotes. By default, the text is always displayed at the centre within the object. 
+						The following options can be used to align the text:
+						Ljust	It left justifies the text. The text appears vertically centered.
+						Rjust	It right justifies the text. The text appears vertically centered.
+						Above	It displays the text above the centre of the object.
+						Below	It displays the text below the cenre of the object.
+
+Brief description of the corners of the objects created in the pic command
+Corner	Represents		Corner	Represents
+n		North			se		South-east
+s		South			sw		South-west
+e		East			t		Top (same as n)
+w		West			b		Bottom (same as s)
+ne		North-east		r		Right (same as e)
+nw		North-west		l		Left (same as w)
+
+Brief description of the attributes of the objects created in the pic command
+Attribute	Description
+.x			It refers to the x-coordinate of the object.
+.y			It refers to the y-coordinate of the object.
+.ht			It refers to the height of the object.
+.wid		It refers to the width of the object.
+.rad		It refers to the radius of the object.
+
+Commands Used in pic
+
+Loops: Repeating sets of commands
+
+for variable = expr1 to expr2 [by [*]expr3]
+
+do
+{
+body
+}
+
+Conditional statement
+
+if expr then
+	statement(s)
+else
+	statement(s)
+
+Including contents from specified files
+
+copy "filename"
+
+The following syntax is used for including only the desired content from another file:
+copy ["filename"] thru
+
+{
+	body
+} [until "exit_cond"]
+
+Or
+copy ["filename"] thru macro [until "exit_cond"]
+
+.PS
+copy thru % circle at ($1,$2) % until "END"
+1 2
+3 4
+5 6
+END
+box
+.PE
+This is equivalent to the following.
+.PS
+circle at (1,2)
+circle at (3,4)
+circle at (5,6)
+box
+.PE
+
+Resetting variables
+
+reset variable1, variable2, ...
+This syntax resets pre-defined variables, variable1, variable2, ..., etc., to their default values.
+If no arguments are given, all pre-defined variables will be reset to their default values.
+

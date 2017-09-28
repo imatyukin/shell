@@ -1,0 +1,25 @@
+/* wait(): Waiting
+ *
+ * man 2 wait
+ *
+ * #include <sys/types.h>
+ * #include <sys/wait.h>
+ * pid_t wait(int *status);
+ *
+ * The call returns the PID of the completed child process along with its status.
+ * The status information allows the parent process to determine the exit status of the child process.
+ * The parent process resumes its execution when the wait() system call returns.
+ * If the calling process has no child process, the wait() system returns immediately with a value of −1.
+ *
+*/
+
+/* The following statement makes the parent process sleep until the child process
+finishes its job. The status of the child process, that is, how it is terminated, is returned
+through the status variable */
+
+#include <sys/wait.h>
+
+int main()
+{
+	wait(&status);
+}

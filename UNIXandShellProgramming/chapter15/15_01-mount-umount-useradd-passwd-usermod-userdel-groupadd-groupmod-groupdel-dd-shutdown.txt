@@ -1,0 +1,126 @@
+MOUNTING UNIX FILE SYSTEM
+
+mount {device/directory to be mounted} {mount directory} options
+
+The two frequently used mount options are as follows:
+-r	It mounts the file system read-only.
+-w	It mounts the file system read-write.
+
+(a) # mount /dev/cdrom /mnt
+(b) # mount /dev/hda3 /framework
+
+UNMOUNTING UNIX FILE SYSTEM
+
+umount {file system to unmounted} {mount directory} {options}
+
+The frequently used options are as follows:
+-a	It unmounts all the mounted file systems.
+-f	It forcibly unmounts the file system.
+
+(a) # umount /dev/cdrom /mnt
+(b) # umount /dev/hda3 /framework
+
+MANAGING USER ACCOUNTS
+
+Creating User Accounts
+
+useradd -d homedirectory -g groupname -s shell userid
+
+The terms of the syntax represent the following:
+-d homedirectory	It refers to the home directory for the new account.
+-g groupname		It refers to the group name or ID (GID) to which the new user will belong.
+-s shell			It refers to the default shell for the new account.
+userid				It refers to the unique user ID (UID) of the new user.
+
+(a) # useradd -d /home/john -g it -s /bin/sh johny123
+(b) # useradd -u 200 -g bank -c "Microchip" -d /home/mce -s /bin/ksh -m mce
+(c) # useradd -u 250 -g 100 manish
+
+The following syntax is used for changing the password of a given user:
+passwd userid
+
+# passwd john
+
+Modifying User Accounts
+
+usermod -d homedirectory -g groupname -s shell -l userid
+
+The syntax can be explained as follows:
+homedirectory	It refers to the new home directory that we want to assign to the account.
+groupname		It refers to the new group name to which we want the account to belong.
+shell			It refers to the new shell that we want to assign to the account.
+userid			It refers to the new user ID that we want to assign to the user.
+-l				The argument enables us to change the userid.
+
+(a) # usermod -d /home/johny -l johny123 johny777
+(b) # usermod -s /bin/csh johny123
+
+Deleting User Accounts
+
+userdel [-r] userid
+
+The -r option is used for deleting a user’s home directory.
+
+$ userdel -r johny777
+
+Creating Groups
+
+groupadd [-g groupid] [-o] [-f] groupname
+
+The syntax can be explained as follows:
+groupid		It is the numerical value representing the group’s ID.
+			The -g option will create a group with some other ID if the specified groupid already exists.
+-o			It indicates to add the group with a non-unique groupid.
+-f			It indicates to cancel the command if a group with the specified groupid already exists.
+groupname	It is the name of the new group.
+
+(a) $ groupadd -g 21 it
+(b) $ groupadd experts
+
+Modifying Groups
+
+$ groupmod [-n] [-g] newgroupname oldgroupname
+
+The -n option is used for changing the group name, whereas the -g option is used for changing the groupid.
+
+(a) $ groupmod -n programmers professionals
+(b) $ groupmod -g 58 professionals
+
+Deleting Groups
+
+groupdel groupname
+
+# groupdel professionals
+
+The user’s account information is maintained in the following three files:
+/etc/passwd	It contains the user account and password information.
+/etc/shadow	It contains the encrypted password of the corresponding account.
+/etc/group	It contains the group information for each account.
+
+BACKUP AND RESTORE
+
+tar
+
+tar stands for ‘tape archive’. This command was originally used to backup data to tape.
+Nowadays, it is used for copying a large number of files into one larger file for the purpose of backup.
+When required, the original files can be extracted from the library.
+
+cpio
+
+cpio stands for ‘copy input output’. This command copies the desired files from one device to another.
+Since the cpio command is not able to find files, it is usually used along with the find command.
+
+dd
+
+dd is a very low-level command that is used for copying data from one disk to another.
+The following command is used to backup a hard drive named /dev/hda to another hard drive named /dev/hdb:
+
+dd if=/dev/hda of=/dev/hdb
+
+SHUT DOWN AND RESTART
+
+shutdown [-h] [-r]
+
+The -h option is used for a complete shutdown, and the -r option is used to restart the system.
+We can also use the halt and power off Unix command line utilities for the same purpose.
+

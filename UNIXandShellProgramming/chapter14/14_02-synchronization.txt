@@ -1,0 +1,89 @@
+SYNCHRONIZATION
+
+The following are the two popular synchronization primitives:
+1. Mutexes
+2. Semaphores
+
+For synchronization, two lock operations are performed: lock and unlock.
+
+Mutual Exclusion Locks
+
+The operations on a mutex lock are as follows:
+mutex_enter()		It acquires the lock.
+mutex_exit()		It releases the lock. This action results in unblocking a waiting thread.
+mutex_tryenter()	It acquires the lock if it is not already held.
+
+Semaphores
+
+The two operations that are possible with the semaphore are as follows:
+wait	It waits for the semaphore integer to become 0.
+signal	It increments the semaphore integer to 1 and accesses the critical section.
+
+In Unix, operations involving semaphores are achieved by the following three system calls:
+semget()	It initializes the semaphore set.
+semctl()	It manages features of semaphores and their permissions.
+semop()		It performs operations on semaphores.
+
+Initializing semaphores
+
+int semget(key_t key, int nsems, int semflg);
+
+Brief description of the parameters used in the semget() function
+Parameter	Description
+key			It represents the access value associated with the semaphore ID.
+nsems		It represents the numbers of elements stored in a semaphore array. A value 0 is passed for this argument if the exact size of the array is unknown.
+semflg		It represents the initial access permissions and creation of control flags.
+
+When successful, the function returns the value of the semaphore ID, semid.
+
+Managing semaphores
+
+int semctl(int semid, int semnum, int cmd, union semnum arg);
+
+Brief description of the parameters used in the semctl() function
+Parameter Description
+Semid	It represents the semaphore ID.
+Semnum	It represents a number to designate the semaphore in an array of semaphores.
+Cmd		It represents the command that we wish to execute on the selected semaphore. The list of valid commands is as follows:
+		GETVAL		It returns the value of a single semaphore.
+		SETVAL		It sets the value of a single semaphore.
+		GETPID		It returns the PID of the process that is operated on the semaphore.
+		GETNCNT		It returns the number of the processes that are waiting for the semaphore value to become 1.
+		GETALL		It returns the values for all the semaphores in a set.
+		SETALL		It sets the values for all the semaphores in a set.
+		IPC_STAT	It returns the status of the semaphore set.
+		IPC_SET		It sets the user ID, group ID, and permissions.
+		IPC_RMID	It removes the specifi ed semaphore set.
+semnum	It indicates an optional argument that represents a union on the requested operation. The semnum union may appear in the following manner:
+		union semnum
+		{
+			int val;
+			struct semid_ds *buf;
+			ushort *array;
+		} smnm;
+
+When successful, the semctl() system call executes the given command on the specified semaphore; otherwise, it returns −1.
+
+Performing operations on semaphores
+
+int semop(int semid, struct sembuf *sops, size_t nsops);
+
+Brief description of the parameters used in the semop() function
+Parameter Description
+Semid	It represents the semaphore ID returned by the semget() call.
+sops	It is a pointer to an array of semaphore operation structures. Each semaphore operation structure, sembuf, stores the operation that is to be performed on semaphores:
+		struct sembuf
+		{
+			ushort_t sem_num; /* semaphore number */
+			short sem_op; /* semaphore operation */
+			short sem_flg; /* operation flags */
+		};
+		We can see that the structure includes the following:
+		1. The semaphore number, sem_num
+		2. A signed integer, sem_op, containing the operation that is to be performed on the semaphore
+		3. The operation flags, sem_flg. 
+		The two most commonly used operation flags are IPC_NOWAIT and SEM_UNDO.
+		The IPC_NOWAIT flag is used to immediately return the function without changing the semaphore value.
+		The SEM_UNDO flag is used to undo the semaphore operation if the process exits prematurely.
+nsops	It represents the length of the array and indicates the maximum number of operations that are allowed in a semop() system call. Its default value is 10.
+
