@@ -1,4 +1,5 @@
 #!/bin/bash
+# Restart Bluetooth Daemon on Mac OS X without restarting
 
 sudo launchctl stop com.apple.blued
 sudo launchctl start com.apple.blued
