@@ -1,7 +1,7 @@
 Installing FreeBSD on Raspberry Pi using macOS:
 
 1. Decompress the image.
-unxz FreeBSD-12.0-RELEASE-arm64-aarch64-RPI3.img.xz --verbose
+xz -d FreeBSD-12.0-RELEASE-arm64-aarch64-RPI3.img.xz
 
 2. Logs the user into the Super User (root) environment.
 sudo su
