@@ -1,0 +1,19 @@
+Installing FreeBSD on Raspberry Pi using macOS:
+
+1. Decompress the image.
+unxz FreeBSD-12.0-RELEASE-arm64-aarch64-RPI3.img.xz --verbose
+
+2. Logs the user into the Super User (root) environment.
+sudo su
+
+3. List the available disks.
+diskutil list
+
+4. Unmounts the volumes on the target disk.
+diskutil unmountDisk /dev/disk1
+
+5. Copy the image to the memory stick.
+dd if=FreeBSD-12.0-RELEASE-arm64-aarch64-RPI3.img of=/dev/disk1 bs=1m
+
+6. Ejects the memory stick.
+diskutil eject /dev/disk1
