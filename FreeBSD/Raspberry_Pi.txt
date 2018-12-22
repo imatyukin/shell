@@ -17,3 +17,16 @@ dd if=FreeBSD-12.0-RELEASE-arm64-aarch64-RPI3.img of=/dev/disk1 bs=1m
 
 6. Ejects the memory stick.
 diskutil eject /dev/disk1
+
+
+DHCP address release
+
+rm /var/db/dhclient.leases.ue0
+service dhclient restart ue0
+
+
+Setting up static IP address
+
+/etc/rc.conf
+ifconfig_ue0="inet 198.18.78.2 netmask 255.255.255.248"
+defaultrouter="198.18.78.1"
