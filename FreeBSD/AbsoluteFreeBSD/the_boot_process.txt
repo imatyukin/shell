@@ -1,0 +1,92 @@
+# Unified Extensible Firmware Interface (UEFI)
+/boot/loader.efi
+
+# Basic Input/Output System (BIOS)
+/boot/loader
+
+
+# Single-User Mode
+
+# UFS
+fsck -p
+fsck -y
+mount -o rw /
+mount -a
+mount /dev/ad0s1a /
+mount -a -t ufs
+
+# ZFS
+zfs mount -a
+zfs set readonly=off zroot/ROOT/default
+
+# The Network
+/etc/netstart
+
+# The Loader Prompt
+lsdev	# Viewing Disks
+
+# Loader Variables
+show
+show acpi.oem
+set console=comconsole
+
+# Booting from the Loader
+boot
+
+# Loader Configuration
+/boot/defaults/loader.conf
+/boot/loader.conf
+
+
+# Multiuser Startup
+
+# rc.conf(5)
+/etc/defaults/rc.conf
+/etc/rc.conf
+/etc/rc.conf.d/
+
+# sysrc(8)
+sysrc -a
+sysrc rc_startmsgs=NO
+# Remove it with the -x flag.
+sysrc -af /boot/loader.conf
+
+# The rc.d Startup System
+/etc/rc
+/etc/rc.d 
+/usr/local/etc/rc.d
+
+# service(8)
+# Listing and Identifying Enabled Services
+service -e
+
+
+# Managing Services
+
+# service name command
+service sshd restart
+
+# fast			Do no checking (used during startup).
+# force			Try harder.
+# one			Start this service despite not being enabled in rc.conf.
+# quiet			Only print service name (used during startup).
+
+# start			Start the service.
+# stop			Stop the service.
+# restart		Stop and restart the service.
+# rcvar			Print the rc.conf variables for this service.
+# enabled		Return true in shell if enabled (for script use).
+# describe		Print service description.
+# extracommands	Show service-specific commands.
+
+# configtest	Parse the service’s configuration file and stop if there’s an error.
+# reload		Perform a soft reload (usually via SIGHUP) rather than a restart.
+# status		Determine whether service is running.
+
+
+# System Shutdown
+
+# shutdown(8)
+# halt(8)
+# reboot(8)
+/etc/rc.shutdown
