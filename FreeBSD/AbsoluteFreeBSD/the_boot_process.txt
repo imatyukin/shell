@@ -90,3 +90,11 @@ service sshd restart
 # halt(8)
 # reboot(8)
 /etc/rc.shutdown
+
+
+# Accesses serial lines
+
+# /etc/remote
+# tip portname
+tip uart1
+~.	# disconnect
